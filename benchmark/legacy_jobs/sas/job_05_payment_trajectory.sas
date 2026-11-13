@@ -1,0 +1,24 @@
+PROC SORT DATA=raw.payments OUT=work.sorted_payments;
+    BY claim_id payment_date payment_id;
+RUN;
+
+DATA out.claim_payment_rollup;
+    SET work.sorted_payments;
+    BY claim_id;
+    RETAIN cumulative_paid indemnity_count first_pay_date;
+    IF FIRST.claim_id THEN DO;
+        cumulative_paid = 0;
+        indemnity_count = 0;
+        first_pay_date = payment_date;
+    END;
+    IF payment_type = 'INDEMNITY' THEN DO;
+        indemnity_count + 1;
+        cumulative_paid + COALESCE(paid_amount, 0);
+    END;
+    ELSE IF payment_type = 'SALVAGE' THEN DO;
+        cumulative_paid + COALESCE(paid_amount, 0);
+    END;
+    days_since_first_pay = payment_date - first_pay_date;
+    IF LAST.claim_id THEN OUTPUT;
+    KEEP claim_id cumulative_paid indemnity_count first_pay_date payment_date days_since_first_pay;
+RUN;
