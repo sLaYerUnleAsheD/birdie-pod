@@ -5,6 +5,7 @@ import { renderResults } from "./views/results.js";
 import { renderFailures } from "./views/failures.js";
 import { renderVerifier } from "./views/verifier.js";
 import { renderAbout } from "./views/about.js";
+import { renderModernize } from "./views/modernize.js";
 
 const main = document.getElementById("main");
 
@@ -17,7 +18,8 @@ function syncNav() {
 function render() {
   syncNav();
   const page = state.route.page;
-  if (page === "results") { clear(main); renderResults(main); }
+  if (page === "modernize") { clear(main); renderModernize(main); }
+  else if (page === "results") { clear(main); renderResults(main); }
   else if (page === "failures") { clear(main); renderFailures(main); }
   else if (page === "verifier") { clear(main); renderVerifier(main); }
   else if (page === "about") { clear(main); renderAbout(main); }

@@ -10,7 +10,7 @@ export const state = {
   runs: new Map(),
   loading: { run: false, program: false, index: true },
   errors: { run: "", program: "" },
-  route: { page: "explorer", runId: "", pane: "cobol", failGroup: "" },
+  route: { page: "modernize", runId: "", pane: "cobol", failGroup: "" },
   filters: { provider: new Set(), effort: new Set(), status: new Set(), q: "" },
   treeOpen: loadTree(),
   goAttempt: null,
@@ -39,9 +39,9 @@ export function pctCount(num, den) {
 }
 
 export function parseHash() {
-  const h = (location.hash || "#/explorer").replace(/^#/, "");
+  const h = (location.hash || "#/modernize").replace(/^#/, "");
   const parts = h.split("/").filter(Boolean);
-  const page = parts[0] || "explorer";
+  const page = parts[0] || "modernize";
   const route = { page, runId: "", pane: "cobol", failGroup: "" };
   if (page === "explorer") {
     route.runId = decodeURIComponent(parts[1] || "");
