@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+*.exe
+hello
+.pytest_cache
+.cache
+run/
+skill/
