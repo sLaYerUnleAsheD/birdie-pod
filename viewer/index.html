@@ -3,20 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Aegis Migrate — recorded runs</title>
-  <meta name="description" content="Explore COBOL to Go verification runs. Every replay is from cache: no API call.">
+  <title>Aegis Modernize — Challenge 03 Lakehouse & COBOL Replay</title>
+  <meta name="description" content="AI-native agentic migration factory: legacy ETL (T-SQL) and SAS to Azure Lakehouse with 100% output reconciliation parity.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="styles.css">
+  <script>
+    if (!location.hash || location.hash === '#' || location.hash === '#/' || location.hash === '#main') {
+      location.hash = '#/modernize';
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css?v=meta_3pane_v5">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header class="top">
-    <a class="brand" href="#/explorer" aria-label="Aegis Migrate home">
-      <span>Aegis Migrate</span>
+    <a class="brand" href="#/modernize" data-nav="modernize" aria-label="Aegis Modernize home">
+      <span>Aegis Modernize</span>
     </a>
     <nav class="tabs" aria-label="Primary">
-      <a href="#/modernize" data-nav="modernize" class="tab-highlight">Challenge 03 (Lakehouse)</a>
+      <a href="#/modernize" data-nav="modernize">Challenge 03 (Lakehouse)</a>
       <a href="#/explorer" data-nav="explorer">Explorer (COBOL)</a>
       <a href="#/results" data-nav="results">Results</a>
       <a href="#/failures" data-nav="failures">Failures</a>
@@ -29,16 +34,16 @@
   </header>
   <section class="banner-provenance" role="region" aria-label="Evidence &amp; Provenance Statement">
     <div class="provenance-content">
-      <span class="provenance-lead">Agents can write the Go. Nobody can trust it without evidence.</span>
+      <span class="provenance-lead">Challenge 03: Agentic Data Platform Modernisation</span>
       <span class="provenance-sep" aria-hidden="true">/</span>
-      <span class="provenance-desc">Aegis Migrate runs the GnuCOBOL oracle, diffs every byte, and executes autonomous repair loops until equivalence is proven.</span>
+      <span class="provenance-desc">3-Tier deterministic routing (sqlglot AST + Meta LLM), Medallion Delta Lake contracts, and mathematical 4-point output reconciliation.</span>
     </div>
     <div class="provenance-badge" role="note">
       <span class="pulse-dot" aria-hidden="true"></span>
-      <span>Replayed from data: no API call</span>
+      <span>100% Record-for-Record Parity</span>
     </div>
   </section>
   <main id="main" class="main" tabindex="-1"></main>
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js?v=meta_3pane_v5"></script>
 </body>
 </html>

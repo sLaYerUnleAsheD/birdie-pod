@@ -125,7 +125,75 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "region": "CONNACHT",
+        "product_line": "MOTOR",
+        "policy_count": "11",
+        "claim_count": "17",
+        "total_incurred_paid": "110092.5",
+        "total_open_reserves": "374867.0"
+      },
+      {
+        "region": "DUBLIN",
+        "product_line": "COMMERCIAL",
+        "policy_count": "10",
+        "claim_count": "15",
+        "total_incurred_paid": "111557.75",
+        "total_open_reserves": "363504.0"
+      },
+      {
+        "region": "LEINSTER",
+        "product_line": "MOTOR",
+        "policy_count": "9",
+        "claim_count": "13",
+        "total_incurred_paid": "94055.5",
+        "total_open_reserves": "298761.5"
+      },
+      {
+        "region": "MUNSTER",
+        "product_line": "COMMERCIAL",
+        "policy_count": "10",
+        "claim_count": "15",
+        "total_incurred_paid": "102600.25",
+        "total_open_reserves": "312846.0"
+      }
+    ],
+    "spark_data": [
+      {
+        "region": "CONNACHT",
+        "product_line": "MOTOR",
+        "policy_count": "11",
+        "claim_count": "17",
+        "total_incurred_paid": "110092.5",
+        "total_open_reserves": "374867.0"
+      },
+      {
+        "region": "DUBLIN",
+        "product_line": "COMMERCIAL",
+        "policy_count": "10",
+        "claim_count": "15",
+        "total_incurred_paid": "111557.75",
+        "total_open_reserves": "363504.0"
+      },
+      {
+        "region": "LEINSTER",
+        "product_line": "MOTOR",
+        "policy_count": "9",
+        "claim_count": "13",
+        "total_incurred_paid": "94055.5",
+        "total_open_reserves": "298761.5"
+      },
+      {
+        "region": "MUNSTER",
+        "product_line": "COMMERCIAL",
+        "policy_count": "10",
+        "claim_count": "15",
+        "total_incurred_paid": "102600.25",
+        "total_open_reserves": "312846.0"
+      }
+    ]
   },
   {
     "id": "job_02_reporting_lag",
@@ -242,7 +310,191 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "claim_id": "CLM-001",
+        "product_line": "MOTOR",
+        "loss_date": "2025-02-04",
+        "report_date": "2025-02-14",
+        "reporting_delay_days": "10",
+        "sla_bucket": "STANDARD",
+        "target_settlement_date": "2025-05-15"
+      },
+      {
+        "claim_id": "CLM-002",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-03-07",
+        "report_date": "2025-03-24",
+        "reporting_delay_days": "17",
+        "sla_bucket": "STANDARD",
+        "target_settlement_date": "2025-06-22"
+      },
+      {
+        "claim_id": "CLM-003",
+        "product_line": "MOTOR",
+        "loss_date": "2025-04-10",
+        "report_date": "2025-04-06",
+        "reporting_delay_days": "-4",
+        "sla_bucket": "FAST_TRACK",
+        "target_settlement_date": "2025-07-05"
+      },
+      {
+        "claim_id": "CLM-004",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-05-13",
+        "report_date": "2025-06-16",
+        "reporting_delay_days": "34",
+        "sla_bucket": "LATE_REPORT",
+        "target_settlement_date": "2025-09-14"
+      },
+      {
+        "claim_id": "CLM-005",
+        "product_line": "MOTOR",
+        "loss_date": "2025-06-16",
+        "report_date": "2025-07-26",
+        "reporting_delay_days": "40",
+        "sla_bucket": "LATE_REPORT",
+        "target_settlement_date": "2025-10-24"
+      },
+      {
+        "claim_id": "CLM-006",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-01-19",
+        "report_date": "2025-02-08",
+        "reporting_delay_days": "20",
+        "sla_bucket": "STANDARD",
+        "target_settlement_date": "2025-05-09"
+      },
+      {
+        "claim_id": "CLM-007",
+        "product_line": "MOTOR",
+        "loss_date": "2025-02-22",
+        "report_date": "2025-02-01",
+        "reporting_delay_days": "-21",
+        "sla_bucket": "FAST_TRACK",
+        "target_settlement_date": "2025-05-02"
+      },
+      {
+        "claim_id": "CLM-008",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-03-25",
+        "report_date": "2025-03-11",
+        "reporting_delay_days": "-14",
+        "sla_bucket": "FAST_TRACK",
+        "target_settlement_date": "2025-06-09"
+      },
+      {
+        "claim_id": "CLM-009",
+        "product_line": "MOTOR",
+        "loss_date": "2025-04-02",
+        "report_date": "2025-04-23",
+        "reporting_delay_days": "21",
+        "sla_bucket": "STANDARD",
+        "target_settlement_date": "2025-07-22"
+      },
+      {
+        "claim_id": "CLM-010",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-05-05",
+        "report_date": "2025-05-05",
+        "reporting_delay_days": "0",
+        "sla_bucket": "FAST_TRACK",
+        "target_settlement_date": "2025-08-03"
+      }
+    ],
+    "spark_data": [
+      {
+        "claim_id": "CLM-001",
+        "product_line": "MOTOR",
+        "loss_date": "2025-02-04",
+        "report_date": "2025-02-14",
+        "reporting_delay_days": "10",
+        "sla_bucket": "STANDARD",
+        "target_settlement_date": "2025-05-15"
+      },
+      {
+        "claim_id": "CLM-002",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-03-07",
+        "report_date": "2025-03-24",
+        "reporting_delay_days": "17",
+        "sla_bucket": "STANDARD",
+        "target_settlement_date": "2025-06-22"
+      },
+      {
+        "claim_id": "CLM-003",
+        "product_line": "MOTOR",
+        "loss_date": "2025-04-10",
+        "report_date": "2025-04-06",
+        "reporting_delay_days": "-4",
+        "sla_bucket": "FAST_TRACK",
+        "target_settlement_date": "2025-07-05"
+      },
+      {
+        "claim_id": "CLM-004",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-05-13",
+        "report_date": "2025-06-16",
+        "reporting_delay_days": "34",
+        "sla_bucket": "LATE_REPORT",
+        "target_settlement_date": "2025-09-14"
+      },
+      {
+        "claim_id": "CLM-005",
+        "product_line": "MOTOR",
+        "loss_date": "2025-06-16",
+        "report_date": "2025-07-26",
+        "reporting_delay_days": "40",
+        "sla_bucket": "LATE_REPORT",
+        "target_settlement_date": "2025-10-24"
+      },
+      {
+        "claim_id": "CLM-006",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-01-19",
+        "report_date": "2025-02-08",
+        "reporting_delay_days": "20",
+        "sla_bucket": "STANDARD",
+        "target_settlement_date": "2025-05-09"
+      },
+      {
+        "claim_id": "CLM-007",
+        "product_line": "MOTOR",
+        "loss_date": "2025-02-22",
+        "report_date": "2025-02-01",
+        "reporting_delay_days": "-21",
+        "sla_bucket": "FAST_TRACK",
+        "target_settlement_date": "2025-05-02"
+      },
+      {
+        "claim_id": "CLM-008",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-03-25",
+        "report_date": "2025-03-11",
+        "reporting_delay_days": "-14",
+        "sla_bucket": "FAST_TRACK",
+        "target_settlement_date": "2025-06-09"
+      },
+      {
+        "claim_id": "CLM-009",
+        "product_line": "MOTOR",
+        "loss_date": "2025-04-02",
+        "report_date": "2025-04-23",
+        "reporting_delay_days": "21",
+        "sla_bucket": "STANDARD",
+        "target_settlement_date": "2025-07-22"
+      },
+      {
+        "claim_id": "CLM-010",
+        "product_line": "COMMERCIAL",
+        "loss_date": "2025-05-05",
+        "report_date": "2025-05-05",
+        "reporting_delay_days": "0",
+        "sla_bucket": "FAST_TRACK",
+        "target_settlement_date": "2025-08-03"
+      }
+    ]
   },
   {
     "id": "job_03_cumulative_exposure",
@@ -354,7 +606,171 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "policy_id": "POL-023",
+        "claim_id": "CLM-022",
+        "loss_date": "2025-05-15",
+        "total_claim_cost": "43651.25",
+        "running_policy_loss": "54072.0",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-045",
+        "claim_id": "CLM-044",
+        "loss_date": "2025-03-03",
+        "total_claim_cost": "43537.25",
+        "running_policy_loss": "43537.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-022",
+        "claim_id": "CLM-021",
+        "loss_date": "2025-04-12",
+        "total_claim_cost": "40838.25",
+        "running_policy_loss": "40838.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-044",
+        "claim_id": "CLM-043",
+        "loss_date": "2025-02-26",
+        "total_claim_cost": "40724.25",
+        "running_policy_loss": "40724.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-021",
+        "claim_id": "CLM-020",
+        "loss_date": "2025-03-09",
+        "total_claim_cost": "38025.25",
+        "running_policy_loss": "38025.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-043",
+        "claim_id": "CLM-042",
+        "loss_date": "2025-01-23",
+        "total_claim_cost": "37911.25",
+        "running_policy_loss": "37911.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-020",
+        "claim_id": "CLM-019",
+        "loss_date": "2025-02-06",
+        "total_claim_cost": "35212.25",
+        "running_policy_loss": "35212.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-042",
+        "claim_id": "CLM-041",
+        "loss_date": "2025-06-20",
+        "total_claim_cost": "35098.25",
+        "running_policy_loss": "35098.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-016",
+        "claim_id": "CLM-065",
+        "loss_date": "2025-06-14",
+        "total_claim_cost": "32754.5",
+        "running_policy_loss": "56714.75",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-019",
+        "claim_id": "CLM-018",
+        "loss_date": "2025-01-03",
+        "total_claim_cost": "32399.25",
+        "running_policy_loss": "32399.25",
+        "severity_rank": "1"
+      }
+    ],
+    "spark_data": [
+      {
+        "policy_id": "POL-023",
+        "claim_id": "CLM-022",
+        "loss_date": "2025-05-15",
+        "total_claim_cost": "43651.25",
+        "running_policy_loss": "54072.0",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-045",
+        "claim_id": "CLM-044",
+        "loss_date": "2025-03-03",
+        "total_claim_cost": "43537.25",
+        "running_policy_loss": "43537.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-022",
+        "claim_id": "CLM-021",
+        "loss_date": "2025-04-12",
+        "total_claim_cost": "40838.25",
+        "running_policy_loss": "40838.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-044",
+        "claim_id": "CLM-043",
+        "loss_date": "2025-02-26",
+        "total_claim_cost": "40724.25",
+        "running_policy_loss": "40724.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-021",
+        "claim_id": "CLM-020",
+        "loss_date": "2025-03-09",
+        "total_claim_cost": "38025.25",
+        "running_policy_loss": "38025.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-043",
+        "claim_id": "CLM-042",
+        "loss_date": "2025-01-23",
+        "total_claim_cost": "37911.25",
+        "running_policy_loss": "37911.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-020",
+        "claim_id": "CLM-019",
+        "loss_date": "2025-02-06",
+        "total_claim_cost": "35212.25",
+        "running_policy_loss": "35212.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-042",
+        "claim_id": "CLM-041",
+        "loss_date": "2025-06-20",
+        "total_claim_cost": "35098.25",
+        "running_policy_loss": "35098.25",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-016",
+        "claim_id": "CLM-065",
+        "loss_date": "2025-06-14",
+        "total_claim_cost": "32754.5",
+        "running_policy_loss": "56714.75",
+        "severity_rank": "1"
+      },
+      {
+        "policy_id": "POL-019",
+        "claim_id": "CLM-018",
+        "loss_date": "2025-01-03",
+        "total_claim_cost": "32399.25",
+        "running_policy_loss": "32399.25",
+        "severity_rank": "1"
+      }
+    ]
   },
   {
     "id": "job_04_actuarial_severity_bands",
@@ -467,7 +883,171 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "loss_year": "2025",
+        "cause_code": "ACCIDENT",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "6",
+        "total_reserves": "130380.0",
+        "avg_reserve": "21730.0"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "ACCIDENT",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "5",
+        "total_reserves": "27960.0",
+        "avg_reserve": "5592.0"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "FIRE",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "7",
+        "total_reserves": "125792.0",
+        "avg_reserve": "17970.285714285714"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "FIRE",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "4",
+        "total_reserves": "26769.0",
+        "avg_reserve": "6692.25"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "LIABILITY",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "6",
+        "total_reserves": "104455.5",
+        "avg_reserve": "17409.25"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "LIABILITY",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "6",
+        "total_reserves": "29490.5",
+        "avg_reserve": "4915.083333333333"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "THEFT",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "8",
+        "total_reserves": "153694.5",
+        "avg_reserve": "19211.8125"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "THEFT",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "3",
+        "total_reserves": "16597.0",
+        "avg_reserve": "5532.333333333333"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "WEATHER",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "7",
+        "total_reserves": "145096.5",
+        "avg_reserve": "20728.071428571428"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "WEATHER",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "4",
+        "total_reserves": "14925.5",
+        "avg_reserve": "3731.375"
+      }
+    ],
+    "spark_data": [
+      {
+        "loss_year": "2025",
+        "cause_code": "ACCIDENT",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "6",
+        "total_reserves": "130380.0",
+        "avg_reserve": "21730.0"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "ACCIDENT",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "5",
+        "total_reserves": "27960.0",
+        "avg_reserve": "5592.0"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "FIRE",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "7",
+        "total_reserves": "125792.0",
+        "avg_reserve": "17970.285714285714"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "FIRE",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "4",
+        "total_reserves": "26769.0",
+        "avg_reserve": "6692.25"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "LIABILITY",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "6",
+        "total_reserves": "104455.5",
+        "avg_reserve": "17409.25"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "LIABILITY",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "6",
+        "total_reserves": "29490.5",
+        "avg_reserve": "4915.083333333333"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "THEFT",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "8",
+        "total_reserves": "153694.5",
+        "avg_reserve": "19211.8125"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "THEFT",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "3",
+        "total_reserves": "16597.0",
+        "avg_reserve": "5532.333333333333"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "WEATHER",
+        "severity_band": "CATASTROPHIC",
+        "claim_volume": "7",
+        "total_reserves": "145096.5",
+        "avg_reserve": "20728.071428571428"
+      },
+      {
+        "loss_year": "2025",
+        "cause_code": "WEATHER",
+        "severity_band": "LARGE_LOSS",
+        "claim_volume": "4",
+        "total_reserves": "14925.5",
+        "avg_reserve": "3731.375"
+      }
+    ]
   },
   {
     "id": "job_05_payment_trajectory",
@@ -569,7 +1149,171 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "claim_id": "CLM-001",
+        "cumulative_paid": "0.0",
+        "indemnity_count": "0",
+        "first_pay_date": "2025-05-12",
+        "payment_date": "2025-05-12",
+        "days_since_first_pay": "0"
+      },
+      {
+        "claim_id": "CLM-002",
+        "cumulative_paid": "1572.25",
+        "indemnity_count": "2",
+        "first_pay_date": "2025-03-06",
+        "payment_date": "2025-06-17",
+        "days_since_first_pay": "103"
+      },
+      {
+        "claim_id": "CLM-003",
+        "cumulative_paid": "3150.75",
+        "indemnity_count": "1",
+        "first_pay_date": "2025-04-11",
+        "payment_date": "2025-07-22",
+        "days_since_first_pay": "102"
+      },
+      {
+        "claim_id": "CLM-004",
+        "cumulative_paid": "2211.5",
+        "indemnity_count": "0",
+        "first_pay_date": "2025-05-16",
+        "payment_date": "2025-08-01",
+        "days_since_first_pay": "77"
+      },
+      {
+        "claim_id": "CLM-005",
+        "cumulative_paid": "3307.0",
+        "indemnity_count": "1",
+        "first_pay_date": "2025-06-21",
+        "payment_date": "2025-09-06",
+        "days_since_first_pay": "77"
+      },
+      {
+        "claim_id": "CLM-006",
+        "cumulative_paid": "7886.25",
+        "indemnity_count": "2",
+        "first_pay_date": "2025-02-11",
+        "payment_date": "2025-07-26",
+        "days_since_first_pay": "165"
+      },
+      {
+        "claim_id": "CLM-007",
+        "cumulative_paid": "9464.75",
+        "indemnity_count": "1",
+        "first_pay_date": "2025-03-16",
+        "payment_date": "2025-08-05",
+        "days_since_first_pay": "142"
+      },
+      {
+        "claim_id": "CLM-008",
+        "cumulative_paid": "5368.5",
+        "indemnity_count": "0",
+        "first_pay_date": "2025-04-21",
+        "payment_date": "2025-09-10",
+        "days_since_first_pay": "142"
+      },
+      {
+        "claim_id": "CLM-009",
+        "cumulative_paid": "6464.0",
+        "indemnity_count": "1",
+        "first_pay_date": "2025-02-15",
+        "payment_date": "2025-05-26",
+        "days_since_first_pay": "100"
+      },
+      {
+        "claim_id": "CLM-010",
+        "cumulative_paid": "14200.25",
+        "indemnity_count": "2",
+        "first_pay_date": "2025-03-20",
+        "payment_date": "2025-06-05",
+        "days_since_first_pay": "77"
+      }
+    ],
+    "spark_data": [
+      {
+        "claim_id": "CLM-001",
+        "cumulative_paid": "0.0",
+        "indemnity_count": "0",
+        "first_pay_date": "2025-05-12",
+        "payment_date": "2025-05-12",
+        "days_since_first_pay": "0"
+      },
+      {
+        "claim_id": "CLM-002",
+        "cumulative_paid": "1572.25",
+        "indemnity_count": "2",
+        "first_pay_date": "2025-03-06",
+        "payment_date": "2025-06-17",
+        "days_since_first_pay": "103"
+      },
+      {
+        "claim_id": "CLM-003",
+        "cumulative_paid": "3150.75",
+        "indemnity_count": "1",
+        "first_pay_date": "2025-04-11",
+        "payment_date": "2025-07-22",
+        "days_since_first_pay": "102"
+      },
+      {
+        "claim_id": "CLM-004",
+        "cumulative_paid": "2211.5",
+        "indemnity_count": "0",
+        "first_pay_date": "2025-05-16",
+        "payment_date": "2025-08-01",
+        "days_since_first_pay": "77"
+      },
+      {
+        "claim_id": "CLM-005",
+        "cumulative_paid": "3307.0",
+        "indemnity_count": "1",
+        "first_pay_date": "2025-06-21",
+        "payment_date": "2025-09-06",
+        "days_since_first_pay": "77"
+      },
+      {
+        "claim_id": "CLM-006",
+        "cumulative_paid": "7886.25",
+        "indemnity_count": "2",
+        "first_pay_date": "2025-02-11",
+        "payment_date": "2025-07-26",
+        "days_since_first_pay": "165"
+      },
+      {
+        "claim_id": "CLM-007",
+        "cumulative_paid": "9464.75",
+        "indemnity_count": "1",
+        "first_pay_date": "2025-03-16",
+        "payment_date": "2025-08-05",
+        "days_since_first_pay": "142"
+      },
+      {
+        "claim_id": "CLM-008",
+        "cumulative_paid": "5368.5",
+        "indemnity_count": "0",
+        "first_pay_date": "2025-04-21",
+        "payment_date": "2025-09-10",
+        "days_since_first_pay": "142"
+      },
+      {
+        "claim_id": "CLM-009",
+        "cumulative_paid": "6464.0",
+        "indemnity_count": "1",
+        "first_pay_date": "2025-02-15",
+        "payment_date": "2025-05-26",
+        "days_since_first_pay": "100"
+      },
+      {
+        "claim_id": "CLM-010",
+        "cumulative_paid": "14200.25",
+        "indemnity_count": "2",
+        "first_pay_date": "2025-03-20",
+        "payment_date": "2025-06-05",
+        "days_since_first_pay": "77"
+      }
+    ]
   },
   {
     "id": "job_06_macro_leakage_audit",
@@ -676,7 +1420,75 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "audit_region": "DUBLIN",
+        "claim_id": "CLM-032",
+        "policy_id": "POL-033",
+        "reserve_amount": "11854.0",
+        "actual_paid": "14927.25",
+        "paid_to_reserve_ratio": "1.2592584781508351"
+      },
+      {
+        "audit_region": "DUBLIN",
+        "claim_id": "CLM-070",
+        "policy_id": "POL-021",
+        "reserve_amount": "2765.0",
+        "actual_paid": "3608.25",
+        "paid_to_reserve_ratio": "1.3049728752260399"
+      },
+      {
+        "audit_region": "MUNSTER",
+        "claim_id": "CLM-030",
+        "policy_id": "POL-031",
+        "reserve_amount": "9385.0",
+        "actual_paid": "11770.25",
+        "paid_to_reserve_ratio": "1.2541555673947788"
+      },
+      {
+        "audit_region": "MUNSTER",
+        "claim_id": "CLM-046",
+        "policy_id": "POL-047",
+        "reserve_amount": "1137.0",
+        "actual_paid": "3026.25",
+        "paid_to_reserve_ratio": "2.661609498680739"
+      }
+    ],
+    "spark_data": [
+      {
+        "audit_region": "DUBLIN",
+        "claim_id": "CLM-032",
+        "policy_id": "POL-033",
+        "reserve_amount": "11854.0",
+        "actual_paid": "14927.25",
+        "paid_to_reserve_ratio": "1.2592584781508351"
+      },
+      {
+        "audit_region": "DUBLIN",
+        "claim_id": "CLM-070",
+        "policy_id": "POL-021",
+        "reserve_amount": "2765.0",
+        "actual_paid": "3608.25",
+        "paid_to_reserve_ratio": "1.3049728752260399"
+      },
+      {
+        "audit_region": "MUNSTER",
+        "claim_id": "CLM-030",
+        "policy_id": "POL-031",
+        "reserve_amount": "9385.0",
+        "actual_paid": "11770.25",
+        "paid_to_reserve_ratio": "1.2541555673947788"
+      },
+      {
+        "audit_region": "MUNSTER",
+        "claim_id": "CLM-046",
+        "policy_id": "POL-047",
+        "reserve_amount": "1137.0",
+        "actual_paid": "3026.25",
+        "paid_to_reserve_ratio": "2.661609498680739"
+      }
+    ]
   },
   {
     "id": "job_01_clm_daily_extract",
@@ -795,7 +1607,75 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "claim_id": "CLM-8091",
+        "policy_id": "POL-10492",
+        "loss_date": "2023-04-12",
+        "claim_status": "SETTLED",
+        "net_paid_amount": "4250.00",
+        "outstanding_reserve": "0.00"
+      },
+      {
+        "claim_id": "CLM-8092",
+        "policy_id": "POL-10501",
+        "loss_date": "2023-04-14",
+        "claim_status": "CLOSED",
+        "net_paid_amount": "1820.50",
+        "outstanding_reserve": "0.00"
+      },
+      {
+        "claim_id": "CLM-8095",
+        "policy_id": "POL-10633",
+        "loss_date": "2023-05-01",
+        "claim_status": "SETTLED",
+        "net_paid_amount": "9500.00",
+        "outstanding_reserve": "0.00"
+      },
+      {
+        "claim_id": "CLM-8104",
+        "policy_id": "POL-10782",
+        "loss_date": "2023-05-18",
+        "claim_status": "CLOSED",
+        "net_paid_amount": "3100.25",
+        "outstanding_reserve": "0.00"
+      }
+    ],
+    "spark_data": [
+      {
+        "claim_id": "CLM-8091",
+        "policy_id": "POL-10492",
+        "loss_date": "2023-04-12",
+        "claim_status": "SETTLED",
+        "net_paid_amount": "4250.00",
+        "outstanding_reserve": "0.00"
+      },
+      {
+        "claim_id": "CLM-8092",
+        "policy_id": "POL-10501",
+        "loss_date": "2023-04-14",
+        "claim_status": "CLOSED",
+        "net_paid_amount": "1820.50",
+        "outstanding_reserve": "0.00"
+      },
+      {
+        "claim_id": "CLM-8095",
+        "policy_id": "POL-10633",
+        "loss_date": "2023-05-01",
+        "claim_status": "SETTLED",
+        "net_paid_amount": "9500.00",
+        "outstanding_reserve": "0.00"
+      },
+      {
+        "claim_id": "CLM-8104",
+        "policy_id": "POL-10782",
+        "loss_date": "2023-05-18",
+        "claim_status": "CLOSED",
+        "net_paid_amount": "3100.25",
+        "outstanding_reserve": "0.00"
+      }
+    ]
   },
   {
     "id": "job_02_policy_earned_premium",
@@ -916,7 +1796,75 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "accounting_year": "2023",
+        "accounting_month": "10",
+        "line_of_business": "COMMERCIAL",
+        "gross_written_premium": "450000.00",
+        "earned_premium_pct": "0.0833",
+        "earned_premium_amount": "37485.00"
+      },
+      {
+        "accounting_year": "2023",
+        "accounting_month": "10",
+        "line_of_business": "MOTOR",
+        "gross_written_premium": "680000.00",
+        "earned_premium_pct": "0.0833",
+        "earned_premium_amount": "56644.00"
+      },
+      {
+        "accounting_year": "2023",
+        "accounting_month": "11",
+        "line_of_business": "COMMERCIAL",
+        "gross_written_premium": "475000.00",
+        "earned_premium_pct": "0.0833",
+        "earned_premium_amount": "39567.50"
+      },
+      {
+        "accounting_year": "2023",
+        "accounting_month": "11",
+        "line_of_business": "MOTOR",
+        "gross_written_premium": "710000.00",
+        "earned_premium_pct": "0.0833",
+        "earned_premium_amount": "59143.00"
+      }
+    ],
+    "spark_data": [
+      {
+        "accounting_year": "2023",
+        "accounting_month": "10",
+        "line_of_business": "COMMERCIAL",
+        "gross_written_premium": "450000.00",
+        "earned_premium_pct": "0.0833",
+        "earned_premium_amount": "37485.00"
+      },
+      {
+        "accounting_year": "2023",
+        "accounting_month": "10",
+        "line_of_business": "MOTOR",
+        "gross_written_premium": "680000.00",
+        "earned_premium_pct": "0.0833",
+        "earned_premium_amount": "56644.00"
+      },
+      {
+        "accounting_year": "2023",
+        "accounting_month": "11",
+        "line_of_business": "COMMERCIAL",
+        "gross_written_premium": "475000.00",
+        "earned_premium_pct": "0.0833",
+        "earned_premium_amount": "39567.50"
+      },
+      {
+        "accounting_year": "2023",
+        "accounting_month": "11",
+        "line_of_business": "MOTOR",
+        "gross_written_premium": "710000.00",
+        "earned_premium_pct": "0.0833",
+        "earned_premium_amount": "59143.00"
+      }
+    ]
   },
   {
     "id": "job_03_clm_loss_ratio_cte",
@@ -1030,7 +1978,75 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "underwriting_year": "2021",
+        "product_line": "COMMERCIAL",
+        "earned_premium": "2450000.00",
+        "incurred_claims": "1592500.00",
+        "loss_ratio_pct": "65.00",
+        "combined_operating_ratio": "94.20"
+      },
+      {
+        "underwriting_year": "2021",
+        "product_line": "MOTOR",
+        "earned_premium": "3800000.00",
+        "incurred_claims": "2736000.00",
+        "loss_ratio_pct": "72.00",
+        "combined_operating_ratio": "98.50"
+      },
+      {
+        "underwriting_year": "2022",
+        "product_line": "COMMERCIAL",
+        "earned_premium": "2680000.00",
+        "incurred_claims": "1661600.00",
+        "loss_ratio_pct": "62.00",
+        "combined_operating_ratio": "91.80"
+      },
+      {
+        "underwriting_year": "2022",
+        "product_line": "MOTOR",
+        "earned_premium": "4150000.00",
+        "incurred_claims": "2905000.00",
+        "loss_ratio_pct": "70.00",
+        "combined_operating_ratio": "96.30"
+      }
+    ],
+    "spark_data": [
+      {
+        "underwriting_year": "2021",
+        "product_line": "COMMERCIAL",
+        "earned_premium": "2450000.00",
+        "incurred_claims": "1592500.00",
+        "loss_ratio_pct": "65.00",
+        "combined_operating_ratio": "94.20"
+      },
+      {
+        "underwriting_year": "2021",
+        "product_line": "MOTOR",
+        "earned_premium": "3800000.00",
+        "incurred_claims": "2736000.00",
+        "loss_ratio_pct": "72.00",
+        "combined_operating_ratio": "98.50"
+      },
+      {
+        "underwriting_year": "2022",
+        "product_line": "COMMERCIAL",
+        "earned_premium": "2680000.00",
+        "incurred_claims": "1661600.00",
+        "loss_ratio_pct": "62.00",
+        "combined_operating_ratio": "91.80"
+      },
+      {
+        "underwriting_year": "2022",
+        "product_line": "MOTOR",
+        "earned_premium": "4150000.00",
+        "incurred_claims": "2905000.00",
+        "loss_ratio_pct": "70.00",
+        "combined_operating_ratio": "96.30"
+      }
+    ]
   },
   {
     "id": "job_04_policy_lapse_ranking",
@@ -1134,7 +2150,67 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "policy_id": "POL-9021",
+        "sequence_number": "1",
+        "endorsement_date": "2022-03-01",
+        "premium_adjustment": "0.00",
+        "is_latest_endorsement": "0"
+      },
+      {
+        "policy_id": "POL-9021",
+        "sequence_number": "2",
+        "endorsement_date": "2023-01-15",
+        "premium_adjustment": "125.50",
+        "is_latest_endorsement": "1"
+      },
+      {
+        "policy_id": "POL-9044",
+        "sequence_number": "1",
+        "endorsement_date": "2022-06-10",
+        "premium_adjustment": "0.00",
+        "is_latest_endorsement": "0"
+      },
+      {
+        "policy_id": "POL-9044",
+        "sequence_number": "2",
+        "endorsement_date": "2023-02-20",
+        "premium_adjustment": "-45.00",
+        "is_latest_endorsement": "1"
+      }
+    ],
+    "spark_data": [
+      {
+        "policy_id": "POL-9021",
+        "sequence_number": "1",
+        "endorsement_date": "2022-03-01",
+        "premium_adjustment": "0.00",
+        "is_latest_endorsement": "0"
+      },
+      {
+        "policy_id": "POL-9021",
+        "sequence_number": "2",
+        "endorsement_date": "2023-01-15",
+        "premium_adjustment": "125.50",
+        "is_latest_endorsement": "1"
+      },
+      {
+        "policy_id": "POL-9044",
+        "sequence_number": "1",
+        "endorsement_date": "2022-06-10",
+        "premium_adjustment": "0.00",
+        "is_latest_endorsement": "0"
+      },
+      {
+        "policy_id": "POL-9044",
+        "sequence_number": "2",
+        "endorsement_date": "2023-02-20",
+        "premium_adjustment": "-45.00",
+        "is_latest_endorsement": "1"
+      }
+    ]
   },
   {
     "id": "job_05_clm_auto_adjudication",
@@ -1224,7 +2300,75 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "claim_id": "CLM-3301",
+        "policy_id": "POL-4410",
+        "claim_amount": "850.00",
+        "fraud_score": "12.4",
+        "auto_adjudication_status": "APPROVED",
+        "payout_decision": "FAST_TRACK_PAY"
+      },
+      {
+        "claim_id": "CLM-3302",
+        "policy_id": "POL-4482",
+        "claim_amount": "1240.00",
+        "fraud_score": "18.1",
+        "auto_adjudication_status": "APPROVED",
+        "payout_decision": "FAST_TRACK_PAY"
+      },
+      {
+        "claim_id": "CLM-3309",
+        "policy_id": "POL-4519",
+        "claim_amount": "14200.00",
+        "fraud_score": "76.8",
+        "auto_adjudication_status": "MANUAL_REVIEW",
+        "payout_decision": "REFER_EXAMINER"
+      },
+      {
+        "claim_id": "CLM-3315",
+        "policy_id": "POL-4602",
+        "claim_amount": "450.00",
+        "fraud_score": "8.2",
+        "auto_adjudication_status": "APPROVED",
+        "payout_decision": "FAST_TRACK_PAY"
+      }
+    ],
+    "spark_data": [
+      {
+        "claim_id": "CLM-3301",
+        "policy_id": "POL-4410",
+        "claim_amount": "850.00",
+        "fraud_score": "12.4",
+        "auto_adjudication_status": "APPROVED",
+        "payout_decision": "FAST_TRACK_PAY"
+      },
+      {
+        "claim_id": "CLM-3302",
+        "policy_id": "POL-4482",
+        "claim_amount": "1240.00",
+        "fraud_score": "18.1",
+        "auto_adjudication_status": "APPROVED",
+        "payout_decision": "FAST_TRACK_PAY"
+      },
+      {
+        "claim_id": "CLM-3309",
+        "policy_id": "POL-4519",
+        "claim_amount": "14200.00",
+        "fraud_score": "76.8",
+        "auto_adjudication_status": "MANUAL_REVIEW",
+        "payout_decision": "REFER_EXAMINER"
+      },
+      {
+        "claim_id": "CLM-3315",
+        "policy_id": "POL-4602",
+        "claim_amount": "450.00",
+        "fraud_score": "8.2",
+        "auto_adjudication_status": "APPROVED",
+        "payout_decision": "FAST_TRACK_PAY"
+      }
+    ]
   },
   {
     "id": "job_06_sas_clm_fraud_score_sql",
@@ -1326,7 +2470,75 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "claim_ref": "SAS-CLM-01",
+        "policy_id": "POL-201",
+        "initial_claim_amount": "18500.00",
+        "anomaly_index": "0.88",
+        "risk_tier": "HIGH",
+        "refer_to_siu": "1"
+      },
+      {
+        "claim_ref": "SAS-CLM-02",
+        "policy_id": "POL-209",
+        "initial_claim_amount": "2400.00",
+        "anomaly_index": "0.14",
+        "risk_tier": "LOW",
+        "refer_to_siu": "0"
+      },
+      {
+        "claim_ref": "SAS-CLM-03",
+        "policy_id": "POL-215",
+        "initial_claim_amount": "32000.00",
+        "anomaly_index": "0.94",
+        "risk_tier": "CRITICAL",
+        "refer_to_siu": "1"
+      },
+      {
+        "claim_ref": "SAS-CLM-04",
+        "policy_id": "POL-230",
+        "initial_claim_amount": "1250.00",
+        "anomaly_index": "0.08",
+        "risk_tier": "LOW",
+        "refer_to_siu": "0"
+      }
+    ],
+    "spark_data": [
+      {
+        "claim_ref": "SAS-CLM-01",
+        "policy_id": "POL-201",
+        "initial_claim_amount": "18500.00",
+        "anomaly_index": "0.88",
+        "risk_tier": "HIGH",
+        "refer_to_siu": "1"
+      },
+      {
+        "claim_ref": "SAS-CLM-02",
+        "policy_id": "POL-209",
+        "initial_claim_amount": "2400.00",
+        "anomaly_index": "0.14",
+        "risk_tier": "LOW",
+        "refer_to_siu": "0"
+      },
+      {
+        "claim_ref": "SAS-CLM-03",
+        "policy_id": "POL-215",
+        "initial_claim_amount": "32000.00",
+        "anomaly_index": "0.94",
+        "risk_tier": "CRITICAL",
+        "refer_to_siu": "1"
+      },
+      {
+        "claim_ref": "SAS-CLM-04",
+        "policy_id": "POL-230",
+        "initial_claim_amount": "1250.00",
+        "anomaly_index": "0.08",
+        "risk_tier": "LOW",
+        "refer_to_siu": "0"
+      }
+    ]
   },
   {
     "id": "job_07_sas_policy_retention_means",
@@ -1429,7 +2641,75 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "region": "CONNACHT",
+        "tenure_band": "1-3 YRS",
+        "policy_count": "1420",
+        "renewal_count": "1192",
+        "retention_rate_pct": "83.94",
+        "mean_premium": "542.50"
+      },
+      {
+        "region": "CONNACHT",
+        "tenure_band": "4+ YRS",
+        "policy_count": "2840",
+        "renewal_count": "2612",
+        "retention_rate_pct": "91.97",
+        "mean_premium": "498.20"
+      },
+      {
+        "region": "DUBLIN",
+        "tenure_band": "1-3 YRS",
+        "policy_count": "3150",
+        "renewal_count": "2684",
+        "retention_rate_pct": "85.21",
+        "mean_premium": "612.80"
+      },
+      {
+        "region": "DUBLIN",
+        "tenure_band": "4+ YRS",
+        "policy_count": "5400",
+        "renewal_count": "5012",
+        "retention_rate_pct": "92.81",
+        "mean_premium": "564.40"
+      }
+    ],
+    "spark_data": [
+      {
+        "region": "CONNACHT",
+        "tenure_band": "1-3 YRS",
+        "policy_count": "1420",
+        "renewal_count": "1192",
+        "retention_rate_pct": "83.94",
+        "mean_premium": "542.50"
+      },
+      {
+        "region": "CONNACHT",
+        "tenure_band": "4+ YRS",
+        "policy_count": "2840",
+        "renewal_count": "2612",
+        "retention_rate_pct": "91.97",
+        "mean_premium": "498.20"
+      },
+      {
+        "region": "DUBLIN",
+        "tenure_band": "1-3 YRS",
+        "policy_count": "3150",
+        "renewal_count": "2684",
+        "retention_rate_pct": "85.21",
+        "mean_premium": "612.80"
+      },
+      {
+        "region": "DUBLIN",
+        "tenure_band": "4+ YRS",
+        "policy_count": "5400",
+        "renewal_count": "5012",
+        "retention_rate_pct": "92.81",
+        "mean_premium": "564.40"
+      }
+    ]
   },
   {
     "id": "job_08_sas_actuarial_triangle_retain",
@@ -1533,7 +2813,67 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "accident_year": "2019",
+        "development_year": "1",
+        "incremental_paid": "450200.00",
+        "cumulative_paid_loss": "450200.00",
+        "case_reserves": "820000.00"
+      },
+      {
+        "accident_year": "2019",
+        "development_year": "2",
+        "incremental_paid": "380400.00",
+        "cumulative_paid_loss": "830600.00",
+        "case_reserves": "410000.00"
+      },
+      {
+        "accident_year": "2019",
+        "development_year": "3",
+        "incremental_paid": "140100.00",
+        "cumulative_paid_loss": "970700.00",
+        "case_reserves": "125000.00"
+      },
+      {
+        "accident_year": "2020",
+        "development_year": "1",
+        "incremental_paid": "485000.00",
+        "cumulative_paid_loss": "485000.00",
+        "case_reserves": "890000.00"
+      }
+    ],
+    "spark_data": [
+      {
+        "accident_year": "2019",
+        "development_year": "1",
+        "incremental_paid": "450200.00",
+        "cumulative_paid_loss": "450200.00",
+        "case_reserves": "820000.00"
+      },
+      {
+        "accident_year": "2019",
+        "development_year": "2",
+        "incremental_paid": "380400.00",
+        "cumulative_paid_loss": "830600.00",
+        "case_reserves": "410000.00"
+      },
+      {
+        "accident_year": "2019",
+        "development_year": "3",
+        "incremental_paid": "140100.00",
+        "cumulative_paid_loss": "970700.00",
+        "case_reserves": "125000.00"
+      },
+      {
+        "accident_year": "2020",
+        "development_year": "1",
+        "incremental_paid": "485000.00",
+        "cumulative_paid_loss": "485000.00",
+        "case_reserves": "890000.00"
+      }
+    ]
   },
   {
     "id": "job_09_broker_commission_tiers",
@@ -1600,7 +2940,75 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "broker_id": "BRK-101",
+        "statement_month": "2023-11",
+        "gross_written_premium": "145000.00",
+        "tier_code": "PLATINUM",
+        "commission_rate": "0.15",
+        "net_commission_payable": "21750.00"
+      },
+      {
+        "broker_id": "BRK-102",
+        "statement_month": "2023-11",
+        "gross_written_premium": "62000.00",
+        "tier_code": "GOLD",
+        "commission_rate": "0.12",
+        "net_commission_payable": "7440.00"
+      },
+      {
+        "broker_id": "BRK-105",
+        "statement_month": "2023-11",
+        "gross_written_premium": "28000.00",
+        "tier_code": "SILVER",
+        "commission_rate": "0.10",
+        "net_commission_payable": "2800.00"
+      },
+      {
+        "broker_id": "BRK-108",
+        "statement_month": "2023-11",
+        "gross_written_premium": "210000.00",
+        "tier_code": "PLATINUM",
+        "commission_rate": "0.15",
+        "net_commission_payable": "31500.00"
+      }
+    ],
+    "spark_data": [
+      {
+        "broker_id": "BRK-101",
+        "statement_month": "2023-11",
+        "gross_written_premium": "145000.00",
+        "tier_code": "PLATINUM",
+        "commission_rate": "0.15",
+        "net_commission_payable": "21750.00"
+      },
+      {
+        "broker_id": "BRK-102",
+        "statement_month": "2023-11",
+        "gross_written_premium": "62000.00",
+        "tier_code": "GOLD",
+        "commission_rate": "0.12",
+        "net_commission_payable": "7440.00"
+      },
+      {
+        "broker_id": "BRK-105",
+        "statement_month": "2023-11",
+        "gross_written_premium": "28000.00",
+        "tier_code": "SILVER",
+        "commission_rate": "0.10",
+        "net_commission_payable": "2800.00"
+      },
+      {
+        "broker_id": "BRK-108",
+        "statement_month": "2023-11",
+        "gross_written_premium": "210000.00",
+        "tier_code": "PLATINUM",
+        "commission_rate": "0.15",
+        "net_commission_payable": "31500.00"
+      }
+    ]
   },
   {
     "id": "job_10_actuarial_triangle_pivot",
@@ -1661,7 +3069,83 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "accident_year": "2019",
+        "dev_12m": "450200.00",
+        "dev_24m": "830600.00",
+        "dev_36m": "970700.00",
+        "dev_48m": "1040500.00",
+        "dev_60m": "1075200.00",
+        "ultimate_projected": "1085000.00"
+      },
+      {
+        "accident_year": "2020",
+        "dev_12m": "485000.00",
+        "dev_24m": "892000.00",
+        "dev_36m": "1035000.00",
+        "dev_48m": "1110000.00",
+        "dev_60m": "1145000.00",
+        "ultimate_projected": "1158000.00"
+      },
+      {
+        "accident_year": "2021",
+        "dev_12m": "520000.00",
+        "dev_24m": "945000.00",
+        "dev_36m": "1098000.00",
+        "dev_48m": "1175000.00",
+        "dev_60m": "-",
+        "ultimate_projected": "1240000.00"
+      },
+      {
+        "accident_year": "2022",
+        "dev_12m": "565000.00",
+        "dev_24m": "1020000.00",
+        "dev_36m": "1180000.00",
+        "dev_48m": "-",
+        "dev_60m": "-",
+        "ultimate_projected": "1330000.00"
+      }
+    ],
+    "spark_data": [
+      {
+        "accident_year": "2019",
+        "dev_12m": "450200.00",
+        "dev_24m": "830600.00",
+        "dev_36m": "970700.00",
+        "dev_48m": "1040500.00",
+        "dev_60m": "1075200.00",
+        "ultimate_projected": "1085000.00"
+      },
+      {
+        "accident_year": "2020",
+        "dev_12m": "485000.00",
+        "dev_24m": "892000.00",
+        "dev_36m": "1035000.00",
+        "dev_48m": "1110000.00",
+        "dev_60m": "1145000.00",
+        "ultimate_projected": "1158000.00"
+      },
+      {
+        "accident_year": "2021",
+        "dev_12m": "520000.00",
+        "dev_24m": "945000.00",
+        "dev_36m": "1098000.00",
+        "dev_48m": "1175000.00",
+        "dev_60m": "-",
+        "ultimate_projected": "1240000.00"
+      },
+      {
+        "accident_year": "2022",
+        "dev_12m": "565000.00",
+        "dev_24m": "1020000.00",
+        "dev_36m": "1180000.00",
+        "dev_48m": "-",
+        "dev_60m": "-",
+        "ultimate_projected": "1330000.00"
+      }
+    ]
   },
   {
     "id": "job_11_ibnr_reserve_recalc",
@@ -1722,7 +3206,83 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "origin_year": "2020",
+        "lob": "COMMERCIAL",
+        "cumulative_paid": "1075200.00",
+        "case_reserves": "85000.00",
+        "chain_ladder_factor": "1.025",
+        "ibnr_reserve": "29600.00",
+        "total_ultimate_loss": "1189800.00"
+      },
+      {
+        "origin_year": "2020",
+        "lob": "MOTOR",
+        "cumulative_paid": "2145000.00",
+        "case_reserves": "140000.00",
+        "chain_ladder_factor": "1.018",
+        "ibnr_reserve": "41120.00",
+        "total_ultimate_loss": "2326120.00"
+      },
+      {
+        "origin_year": "2021",
+        "lob": "COMMERCIAL",
+        "cumulative_paid": "1098000.00",
+        "case_reserves": "165000.00",
+        "chain_ladder_factor": "1.062",
+        "ibnr_reserve": "78350.00",
+        "total_ultimate_loss": "1341350.00"
+      },
+      {
+        "origin_year": "2021",
+        "lob": "MOTOR",
+        "cumulative_paid": "2210000.00",
+        "case_reserves": "255000.00",
+        "chain_ladder_factor": "1.045",
+        "ibnr_reserve": "110900.00",
+        "total_ultimate_loss": "2575900.00"
+      }
+    ],
+    "spark_data": [
+      {
+        "origin_year": "2020",
+        "lob": "COMMERCIAL",
+        "cumulative_paid": "1075200.00",
+        "case_reserves": "85000.00",
+        "chain_ladder_factor": "1.025",
+        "ibnr_reserve": "29600.00",
+        "total_ultimate_loss": "1189800.00"
+      },
+      {
+        "origin_year": "2020",
+        "lob": "MOTOR",
+        "cumulative_paid": "2145000.00",
+        "case_reserves": "140000.00",
+        "chain_ladder_factor": "1.018",
+        "ibnr_reserve": "41120.00",
+        "total_ultimate_loss": "2326120.00"
+      },
+      {
+        "origin_year": "2021",
+        "lob": "COMMERCIAL",
+        "cumulative_paid": "1098000.00",
+        "case_reserves": "165000.00",
+        "chain_ladder_factor": "1.062",
+        "ibnr_reserve": "78350.00",
+        "total_ultimate_loss": "1341350.00"
+      },
+      {
+        "origin_year": "2021",
+        "lob": "MOTOR",
+        "cumulative_paid": "2210000.00",
+        "case_reserves": "255000.00",
+        "chain_ladder_factor": "1.045",
+        "ibnr_reserve": "110900.00",
+        "total_ultimate_loss": "2575900.00"
+      }
+    ]
   },
   {
     "id": "job_12_sas_mortality_experience",
@@ -1784,6 +3344,82 @@
       },
       "sample_diffs": [],
       "summary": "Reconciliation PASSED with 100.0% record parity."
-    }
+    },
+    "legacy_data": [
+      {
+        "age_group": "30-39",
+        "gender": "F",
+        "exposure_years": "12450",
+        "observed_deaths": "8",
+        "qx_actual": "0.00064",
+        "qx_standard": "0.00068",
+        "ae_ratio_pct": "94.12"
+      },
+      {
+        "age_group": "30-39",
+        "gender": "M",
+        "exposure_years": "13100",
+        "observed_deaths": "14",
+        "qx_actual": "0.00107",
+        "qx_standard": "0.00112",
+        "ae_ratio_pct": "95.54"
+      },
+      {
+        "age_group": "40-49",
+        "gender": "F",
+        "exposure_years": "15800",
+        "observed_deaths": "22",
+        "qx_actual": "0.00139",
+        "qx_standard": "0.00145",
+        "ae_ratio_pct": "95.86"
+      },
+      {
+        "age_group": "40-49",
+        "gender": "M",
+        "exposure_years": "16200",
+        "observed_deaths": "38",
+        "qx_actual": "0.00235",
+        "qx_standard": "0.00242",
+        "ae_ratio_pct": "97.11"
+      }
+    ],
+    "spark_data": [
+      {
+        "age_group": "30-39",
+        "gender": "F",
+        "exposure_years": "12450",
+        "observed_deaths": "8",
+        "qx_actual": "0.00064",
+        "qx_standard": "0.00068",
+        "ae_ratio_pct": "94.12"
+      },
+      {
+        "age_group": "30-39",
+        "gender": "M",
+        "exposure_years": "13100",
+        "observed_deaths": "14",
+        "qx_actual": "0.00107",
+        "qx_standard": "0.00112",
+        "ae_ratio_pct": "95.54"
+      },
+      {
+        "age_group": "40-49",
+        "gender": "F",
+        "exposure_years": "15800",
+        "observed_deaths": "22",
+        "qx_actual": "0.00139",
+        "qx_standard": "0.00145",
+        "ae_ratio_pct": "95.86"
+      },
+      {
+        "age_group": "40-49",
+        "gender": "M",
+        "exposure_years": "16200",
+        "observed_deaths": "38",
+        "qx_actual": "0.00235",
+        "qx_standard": "0.00242",
+        "ae_ratio_pct": "97.11"
+      }
+    ]
   }
 ]

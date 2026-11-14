@@ -1,4 +1,4 @@
-# Aegis Modernize: Agentic Data Platform Modernisation
+# EXL: Agentic Data Platform Modernisation
 ### Legacy T-SQL ETL & SAS Programs to Azure Lakehouse (PySpark + Delta Lake)
 
 > **EXL Data & AI Hackathon — Challenge 03: Agentic Data Platform Modernisation**  
