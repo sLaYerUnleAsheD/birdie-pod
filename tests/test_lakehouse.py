@@ -120,6 +120,33 @@ class TestLakehouseModernization(unittest.TestCase):
         res_bad = validate_dataframe_contract(invalid_data, CONTRACT_CLAIMS_SILVER)
         self.assertFalse(res_bad.passed)
 
+    def test_sample_tsql_routing_tier_c(self):
+        with open("benchmark/legacy_jobs/sample.tsql", "r", encoding="utf-8") as f:
+            sample_sql = f.read()
+        route = route_tsql(sample_sql)
+        self.assertEqual(route.tier_code, "C")
+        self.assertIn("#temp_table usage", route.detected_features)
+
+    def test_sample_tsql_end_to_end_parity(self):
+        from lakehouse_adapter.engine import execute_sample_tsql
+        legacy_df, spark_df = execute_sample_tsql()
+        # Verify columns strictly match MonthlyClaimsSummary without temp table artifacts
+        expected_cols = ["ReportMonth", "PolicyType", "CustomerRegion", "TotalClaims", "TotalPayout"]
+        self.assertEqual(list(legacy_df.columns), expected_cols)
+        self.assertEqual(list(spark_df.columns), expected_cols)
+        self.assertNotIn("StagingClaims", legacy_df.columns)
+        # Verify strictly 2025 records
+        self.assertTrue(legacy_df["ReportMonth"].str.startswith("2025").all())
+        # Verify 4-point reconciliation parity
+        scorecard = reconcile_dataframes(
+            legacy_df.to_dict(orient="records"),
+            spark_df.to_dict(orient="records"),
+            primary_keys=["ReportMonth", "PolicyType", "CustomerRegion"],
+            job_id="job_sample_tsql_monthly_claims"
+        )
+        self.assertTrue(scorecard.overall_passed)
+        self.assertEqual(scorecard.match_percentage, 100.0)
+
 
 if __name__ == "__main__":
     unittest.main()

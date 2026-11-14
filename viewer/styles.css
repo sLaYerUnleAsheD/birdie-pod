@@ -486,6 +486,9 @@ tr:hover td { background: var(--panel-hover); }
 .step.on .dot  { background: var(--blue-primary); }
 .step.ok .dot  { background: var(--ok); }
 .step.bad .dot { background: var(--bad); }
+.step.queued .dot { background: var(--panel); border: 2px dashed var(--mut-dim); }
+.step.queued h3 { opacity: 0.8; }
+.step.queued .facts { color: var(--mut-dim); }
 .step h3 { margin: 0; font-size: .86rem; font-weight: 700; }
 .facts { color: var(--mut); font-size: .76rem; margin: .2rem 0; }
 

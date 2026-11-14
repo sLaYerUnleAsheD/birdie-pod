@@ -18,10 +18,58 @@ from typing import Any
 # Ensure project root is in sys.path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-import pandas as pd
-import numpy as np
+try:
+    import pandas as pd
+    import numpy as np
+except ImportError:
+    pd = None
+    np = None
 
 from lakehouse_adapter.reconcile import reconcile_dataframes, ReconciliationScorecard
+
+
+class PureDataFrame:
+    """Zero-dependency DataFrame shim when pandas is not installed."""
+    def __init__(self, records: list[dict[str, Any]], columns: list[str] = None):
+        self._records = [dict(r) for r in records]
+        if columns:
+            self.columns = list(columns)
+        elif records:
+            self.columns = list(records[0].keys())
+        else:
+            self.columns = []
+
+    def __len__(self):
+        return len(self._records)
+
+    def to_dict(self, orient="records"):
+        return [dict(r) for r in self._records]
+
+    def to_csv(self, path, index=False):
+        import csv
+        with open(path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=self.columns)
+            writer.writeheader()
+            writer.writerows(self._records)
+
+    def __getitem__(self, col_name):
+        class SeriesShim:
+            def __init__(self, values):
+                self._vals = values
+            @property
+            def str(self):
+                class StrAccessor:
+                    def __init__(self, vals):
+                        self._vals = vals
+                    def startswith(self, prefix):
+                        class AllAccessor:
+                            def __init__(self, booleans):
+                                self._bools = booleans
+                            def all(self):
+                                return all(self._bools)
+                        return AllAccessor([str(v).startswith(prefix) for v in self._vals])
+                return StrAccessor(self._vals)
+        return SeriesShim([r.get(col_name) for r in self._records])
 
 
 def transpile_tsql_for_execution(query: str) -> str:
@@ -377,6 +425,135 @@ def execute_job_06() -> tuple[pd.DataFrame, pd.DataFrame]:
     return legacy_df, spark_df
 
 
+def execute_sample_tsql(con: sqlite3.Connection = None) -> tuple[Any, Any]:
+    """Sample T-SQL: Multi-Statement Procedural Pipeline with Temporary Staging Table.
+    Executes raw T-SQL in SQLite engine with real data:
+    1. SELECT ... INTO #StagingClaims FROM Claims INNER JOIN Policies WHERE ClaimStatus = 'Approved' AND YEAR(ClaimDate) = 2025
+    2. CREATE TABLE MonthlyClaimsSummary (...)
+    3. INSERT INTO MonthlyClaimsSummary SELECT FORMAT(ClaimDate, 'yyyy-MM') ... GROUP BY ...
+    4. DROP TABLE #StagingClaims
+    """
+    con = sqlite3.connect(":memory:")
+
+    claims_data = [
+        ("CLM-1001", "POL-5001", "2025-01-14", 1250.00, "Approved"),
+        ("CLM-1002", "POL-5002", "2025-01-22", 3400.50, "Approved"),
+        ("CLM-1003", "POL-5001", "2025-01-28", 850.00,  "Approved"),
+        ("CLM-1004", "POL-5003", "2025-02-05", 4200.00, "Approved"),
+        ("CLM-1005", "POL-5004", "2025-02-18", 1950.75, "Rejected"),
+        ("CLM-1006", "POL-5002", "2025-02-25", 2100.00, "Approved"),
+        ("CLM-1007", "POL-5003", "2025-03-02", 1500.00, "Approved"),
+        ("CLM-1008", "POL-5005", "2025-03-15", 5600.00, "Approved"),
+        ("CLM-1009", "POL-5001", "2024-11-10", 999.00,  "Approved"),
+    ]
+    policies_data = [
+        ("POL-5001", "COMMERCIAL_AUTO", "DUBLIN"),
+        ("POL-5002", "HOMEOWNERS",      "MUNSTER"),
+        ("POL-5003", "COMMERCIAL_AUTO", "CONNACHT"),
+        ("POL-5004", "LIABILITY",        "LEINSTER"),
+        ("POL-5005", "HOMEOWNERS",      "DUBLIN"),
+    ]
+
+    con.execute("""
+    CREATE TABLE Claims (
+        ClaimID VARCHAR(20),
+        PolicyNumber VARCHAR(20),
+        ClaimDate DATE,
+        ClaimAmount DECIMAL(18,2),
+        ClaimStatus VARCHAR(20)
+    );
+    """)
+    con.execute("""
+    CREATE TABLE Policies (
+        PolicyNumber VARCHAR(20),
+        PolicyType VARCHAR(50),
+        CustomerRegion VARCHAR(50)
+    );
+    """)
+
+    con.executemany("INSERT INTO Claims VALUES (?,?,?,?,?)", claims_data)
+    con.executemany("INSERT INTO Policies VALUES (?,?,?)", policies_data)
+
+    # 1. Execute T-SQL Staging into temporary table
+    con.execute("""
+    CREATE TEMP TABLE StagingClaims AS
+    SELECT 
+        c.ClaimID,
+        c.PolicyNumber,
+        c.ClaimDate,
+        c.ClaimAmount,
+        p.PolicyType,
+        p.CustomerRegion
+    FROM Claims c
+    INNER JOIN Policies p ON c.PolicyNumber = p.PolicyNumber
+    WHERE c.ClaimStatus = 'Approved' 
+      AND strftime('%Y', c.ClaimDate) = '2025';
+    """)
+
+    # 2. Create Reporting Table
+    con.execute("""
+    CREATE TABLE IF NOT EXISTS MonthlyClaimsSummary (
+        ReportMonth VARCHAR(7),
+        PolicyType VARCHAR(50),
+        CustomerRegion VARCHAR(50),
+        TotalClaims INT,
+        TotalPayout DECIMAL(18,2)
+    );
+    """)
+    con.execute("DELETE FROM MonthlyClaimsSummary;")
+
+    # 3. Insert Aggregated Monthly Summary
+    con.execute("""
+    INSERT INTO MonthlyClaimsSummary
+        (ReportMonth, PolicyType, CustomerRegion, TotalClaims, TotalPayout)
+    SELECT 
+        strftime('%Y-%m', ClaimDate) AS ReportMonth,
+        PolicyType,
+        CustomerRegion,
+        COUNT(ClaimID) AS TotalClaims,
+        ROUND(SUM(ClaimAmount), 2) AS TotalPayout
+    FROM StagingClaims
+    GROUP BY 
+        strftime('%Y-%m', ClaimDate),
+        PolicyType,
+        CustomerRegion;
+    """)
+
+    # 4. Drop staging temporary table
+    con.execute("DROP TABLE StagingClaims;")
+
+    cur = con.execute("SELECT ReportMonth, PolicyType, CustomerRegion, TotalClaims, TotalPayout FROM MonthlyClaimsSummary ORDER BY ReportMonth, PolicyType, CustomerRegion;")
+    cols = [d[0] for d in cur.description]
+    raw_rows = cur.fetchall()
+    legacy_records = [dict(zip(cols, row)) for row in raw_rows]
+
+    # Migrated PySpark Simulation in pure Python:
+    pol_map = {p[0]: (p[1], p[2]) for p in policies_data}
+    from collections import defaultdict
+    groups = defaultdict(lambda: {"TotalClaims": 0, "TotalPayout": 0.0})
+    for cid, pnum, cdate, camount, cstatus in claims_data:
+        if cstatus == "Approved" and cdate.startswith("2025") and pnum in pol_map:
+            ptype, cregion = pol_map[pnum]
+            rmonth = cdate[:7]
+            key = (rmonth, ptype, cregion)
+            groups[key]["TotalClaims"] += 1
+            groups[key]["TotalPayout"] += float(camount)
+
+    spark_records = []
+    for (rmonth, ptype, cregion) in sorted(groups.keys()):
+        spark_records.append({
+            "ReportMonth": rmonth,
+            "PolicyType": ptype,
+            "CustomerRegion": cregion,
+            "TotalClaims": groups[(rmonth, ptype, cregion)]["TotalClaims"],
+            "TotalPayout": round(groups[(rmonth, ptype, cregion)]["TotalPayout"], 2),
+        })
+
+    if pd is not None:
+        return pd.DataFrame(legacy_records), pd.DataFrame(spark_records)
+    return PureDataFrame(legacy_records, cols), PureDataFrame(spark_records, cols)
+
+
 # -----------------------------------------------------------------------------
 # Main Runner
 # -----------------------------------------------------------------------------
@@ -392,6 +569,7 @@ def run_all_end_to_end() -> list[dict[str, Any]]:
         ("job_04_actuarial_severity_bands", execute_job_04, ["loss_year", "cause_code", "severity_band"]),
         ("job_05_payment_trajectory", execute_job_05, ["claim_id"]),
         ("job_06_macro_leakage_audit", execute_job_06, ["audit_region", "claim_id"]),
+        ("job_sample_tsql_monthly_claims", lambda: execute_sample_tsql(con), ["ReportMonth", "PolicyType", "CustomerRegion"]),
     ]
 
     for job_id, runner, pk in jobs:
