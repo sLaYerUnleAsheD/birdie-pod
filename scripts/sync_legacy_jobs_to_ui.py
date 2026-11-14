@@ -24,11 +24,18 @@ for f in legacy_tsql:
     spark_code = generate_pyspark_deterministic_skeleton(ast_lin, f.stem)
     cols = [{"target": c.target_column, "source": c.source_expr, "type": c.transformation_type} for c in ast_lin.columns]
 
-    mock_leg = [
-        {"claim_id": "CLM-01", "product_line": "MOTOR", "paid_amount": 1450.0, "total_open_reserves": 5000.0},
-        {"claim_id": "CLM-02", "product_line": "PROPERTY", "paid_amount": 2300.0, "total_open_reserves": 8200.0},
-    ]
-    score = reconcile_dataframes(mock_leg, mock_leg, ["claim_id"], job_id=f.stem)
+    leg_csv_path = Path(f"benchmark/legacy_jobs/expected_outputs/{f.stem}_legacy.csv")
+    spk_csv_path = Path(f"benchmark/legacy_jobs/expected_outputs/{f.stem}_spark.csv")
+    if leg_csv_path.exists() and spk_csv_path.exists():
+        import pandas as pd
+        mock_leg = pd.read_csv(leg_csv_path).to_dict(orient="records")
+        mock_spk = pd.read_csv(spk_csv_path).to_dict(orient="records")
+    else:
+        mock_leg = [{"claim_id": "CLM-01", "paid_amount": 1450.0}]
+        mock_spk = [{"claim_id": "CLM-01", "paid_amount": 1450.0}]
+
+    pk = [cols[0]["target"] if cols else "claim_id"]
+    score = reconcile_dataframes(mock_leg, mock_spk, pk, job_id=f.stem)
 
     new_entries.append({
         "id": f.stem,
@@ -39,7 +46,7 @@ for f in legacy_tsql:
         "routing_reason": f"{route.reason} Features detected: {route.detected_features}",
         "layer_in": "Bronze / Silver (STG_TABLES)",
         "layer_out": "Silver / Gold (DELTA_MART)",
-        "primary_keys": [cols[0]["target"] if cols else "id"],
+        "primary_keys": pk,
         "legacy_code": src,
         "pyspark_code": spark_code,
         "lineage": cols,
@@ -71,11 +78,19 @@ df_transformed = df_source
 df_transformed.write.format("delta").mode("overwrite").saveAsTable("gold.{f.stem}")
 """
     cols = [{"target": step.step_type, "source": step.raw_code.splitlines()[0] if step.raw_code else "STEP", "type": "SAS_PROC"} for step in analysis.steps]
-    mock_sas = [
-        {"claim_id": "CLM-10", "total_reserves": 54000.0, "severity_band": "LARGE_LOSS"},
-        {"claim_id": "CLM-20", "total_reserves": 12000.0, "severity_band": "ATTRITIONAL"},
-    ]
-    score = reconcile_dataframes(mock_sas, mock_sas, ["claim_id"], job_id=f.stem)
+    
+    leg_csv_path = Path(f"benchmark/legacy_jobs/expected_outputs/{f.stem}_legacy.csv")
+    spk_csv_path = Path(f"benchmark/legacy_jobs/expected_outputs/{f.stem}_spark.csv")
+    if leg_csv_path.exists() and spk_csv_path.exists():
+        import pandas as pd
+        mock_sas = pd.read_csv(leg_csv_path).to_dict(orient="records")
+        mock_sas_spk = pd.read_csv(spk_csv_path).to_dict(orient="records")
+    else:
+        mock_sas = [{"claim_id": "CLM-10", "total_reserves": 54000.0}]
+        mock_sas_spk = [{"claim_id": "CLM-10", "total_reserves": 54000.0}]
+
+    pk = ["claim_id" if "claim_id" in mock_sas[0] else list(mock_sas[0].keys())[0]]
+    score = reconcile_dataframes(mock_sas, mock_sas_spk, pk, job_id=f.stem)
 
     new_entries.append({
         "id": f.stem,
@@ -86,7 +101,7 @@ df_transformed.write.format("delta").mode("overwrite").saveAsTable("gold.{f.stem
         "routing_reason": f"{route.reason} Features detected: {route.detected_features}",
         "layer_in": "Bronze (SAS Datasets)",
         "layer_out": "Gold (Delta Lake)",
-        "primary_keys": ["claim_id"],
+        "primary_keys": pk,
         "legacy_code": src,
         "pyspark_code": spark_code,
         "lineage": cols,

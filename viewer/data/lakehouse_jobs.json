@@ -52,10 +52,10 @@
       "check_1_row_count": {
         "name": "Check 1 \u2014 Row Count Match",
         "passed": true,
-        "details": "Legacy: 2 rows, PySpark: 2 rows (Delta: 0)",
+        "details": "Legacy: 4 rows, PySpark: 4 rows (Delta: 0)",
         "metrics": {
-          "legacy_count": 2,
-          "spark_count": 2,
+          "legacy_count": 4,
+          "spark_count": 4,
           "delta": 0
         }
       },
@@ -65,15 +65,19 @@
         "details": "Schemas match exactly.",
         "metrics": {
           "legacy_columns": [
-            "claim_id",
+            "region",
             "product_line",
-            "paid_amount",
+            "policy_count",
+            "claim_count",
+            "total_incurred_paid",
             "total_open_reserves"
           ],
           "spark_columns": [
-            "claim_id",
+            "region",
             "product_line",
-            "paid_amount",
+            "policy_count",
+            "claim_count",
+            "total_incurred_paid",
             "total_open_reserves"
           ],
           "mismatched": []
@@ -84,15 +88,27 @@
         "passed": true,
         "details": "All numeric control totals match within rtol=1e-5.",
         "metrics": {
-          "paid_amount": {
-            "legacy_sum": 3750.0,
-            "spark_sum": 3750.0,
+          "policy_count": {
+            "legacy_sum": 40.0,
+            "spark_sum": 40.0,
             "delta": 0.0,
             "passed": true
           },
           "total_open_reserves": {
-            "legacy_sum": 13200.0,
-            "spark_sum": 13200.0,
+            "legacy_sum": 1349978.5,
+            "spark_sum": 1349978.5,
+            "delta": 0.0,
+            "passed": true
+          },
+          "total_incurred_paid": {
+            "legacy_sum": 418306.0,
+            "spark_sum": 418306.0,
+            "delta": 0.0,
+            "passed": true
+          },
+          "claim_count": {
+            "legacy_sum": 60.0,
+            "spark_sum": 60.0,
             "delta": 0.0,
             "passed": true
           }
@@ -103,7 +119,7 @@
         "passed": true,
         "details": "Exact record-for-record cell match proven.",
         "metrics": {
-          "total_rows_checked": 2,
+          "total_rows_checked": 4,
           "diff_count": 0
         }
       },
@@ -169,10 +185,10 @@
       "check_1_row_count": {
         "name": "Check 1 \u2014 Row Count Match",
         "passed": true,
-        "details": "Legacy: 2 rows, PySpark: 2 rows (Delta: 0)",
+        "details": "Legacy: 75 rows, PySpark: 75 rows (Delta: 0)",
         "metrics": {
-          "legacy_count": 2,
-          "spark_count": 2,
+          "legacy_count": 75,
+          "spark_count": 75,
           "delta": 0
         }
       },
@@ -184,14 +200,20 @@
           "legacy_columns": [
             "claim_id",
             "product_line",
-            "paid_amount",
-            "total_open_reserves"
+            "loss_date",
+            "report_date",
+            "reporting_delay_days",
+            "sla_bucket",
+            "target_settlement_date"
           ],
           "spark_columns": [
             "claim_id",
             "product_line",
-            "paid_amount",
-            "total_open_reserves"
+            "loss_date",
+            "report_date",
+            "reporting_delay_days",
+            "sla_bucket",
+            "target_settlement_date"
           ],
           "mismatched": []
         }
@@ -201,15 +223,9 @@
         "passed": true,
         "details": "All numeric control totals match within rtol=1e-5.",
         "metrics": {
-          "paid_amount": {
-            "legacy_sum": 3750.0,
-            "spark_sum": 3750.0,
-            "delta": 0.0,
-            "passed": true
-          },
-          "total_open_reserves": {
-            "legacy_sum": 13200.0,
-            "spark_sum": 13200.0,
+          "reporting_delay_days": {
+            "legacy_sum": 1002.0,
+            "spark_sum": 1002.0,
             "delta": 0.0,
             "passed": true
           }
@@ -220,7 +236,7 @@
         "passed": true,
         "details": "Exact record-for-record cell match proven.",
         "metrics": {
-          "total_rows_checked": 2,
+          "total_rows_checked": 75,
           "diff_count": 0
         }
       },
@@ -271,10 +287,10 @@
       "check_1_row_count": {
         "name": "Check 1 \u2014 Row Count Match",
         "passed": true,
-        "details": "Legacy: 2 rows, PySpark: 2 rows (Delta: 0)",
+        "details": "Legacy: 50 rows, PySpark: 50 rows (Delta: 0)",
         "metrics": {
-          "legacy_count": 2,
-          "spark_count": 2,
+          "legacy_count": 50,
+          "spark_count": 50,
           "delta": 0
         }
       },
@@ -284,16 +300,20 @@
         "details": "Schemas match exactly.",
         "metrics": {
           "legacy_columns": [
+            "policy_id",
             "claim_id",
-            "product_line",
-            "paid_amount",
-            "total_open_reserves"
+            "loss_date",
+            "total_claim_cost",
+            "running_policy_loss",
+            "severity_rank"
           ],
           "spark_columns": [
+            "policy_id",
             "claim_id",
-            "product_line",
-            "paid_amount",
-            "total_open_reserves"
+            "loss_date",
+            "total_claim_cost",
+            "running_policy_loss",
+            "severity_rank"
           ],
           "mismatched": []
         }
@@ -303,15 +323,21 @@
         "passed": true,
         "details": "All numeric control totals match within rtol=1e-5.",
         "metrics": {
-          "paid_amount": {
-            "legacy_sum": 3750.0,
-            "spark_sum": 3750.0,
+          "running_policy_loss": {
+            "legacy_sum": 1628475.75,
+            "spark_sum": 1628475.75,
             "delta": 0.0,
             "passed": true
           },
-          "total_open_reserves": {
-            "legacy_sum": 13200.0,
-            "spark_sum": 13200.0,
+          "severity_rank": {
+            "legacy_sum": 62.0,
+            "spark_sum": 62.0,
+            "delta": 0.0,
+            "passed": true
+          },
+          "total_claim_cost": {
+            "legacy_sum": 1318215.0,
+            "spark_sum": 1318215.0,
             "delta": 0.0,
             "passed": true
           }
@@ -322,7 +348,7 @@
         "passed": true,
         "details": "Exact record-for-record cell match proven.",
         "metrics": {
-          "total_rows_checked": 2,
+          "total_rows_checked": 50,
           "diff_count": 0
         }
       },
@@ -340,7 +366,7 @@
     "layer_in": "Bronze (SAS Datasets)",
     "layer_out": "Gold (Delta Lake)",
     "primary_keys": [
-      "claim_id"
+      "loss_year"
     ],
     "legacy_code": "PROC FORMAT;\n    VALUE sev_fmt\n        LOW - 1000      = 'ATTRITIONAL'\n        1000.01 - 10000 = 'LARGE_LOSS'\n        10000.01 - HIGH = 'CATASTROPHIC'\n        OTHER           = 'UNKNOWN';\nRUN;\n\nDATA work.claims_banded;\n    SET raw.claims;\n    WHERE loss_date >= '01JAN2025'd AND claim_status NE 'OPEN';\n    severity_band = PUT(reserve_amount, sev_fmt.);\n    loss_year = YEAR(loss_date);\nRUN;\n\nPROC MEANS DATA=work.claims_banded NOPRINT NWAY;\n    CLASS loss_year cause_code severity_band;\n    VAR reserve_amount;\n    OUTPUT OUT=out.severity_summary (DROP=_TYPE_ _FREQ_)\n        N=claim_volume\n        SUM=total_reserves\n        MEAN=avg_reserve;\nRUN;\n",
     "pyspark_code": "# PySpark Migration for SAS Program: job_04_actuarial_severity_bands.sas\n# Triage Tier: Tier B (Medium - Hybrid AST + Meta LLM)\n# Detected Syntax: ['SAS DATA step', 'PROC MEANS/SUMMARY aggregation', 'PROC FORMAT custom mapping', 'SET concatenation']\nfrom pyspark.sql import SparkSession\nfrom pyspark.sql import functions as F\nfrom pyspark.sql.window import Window\n\nspark = SparkSession.builder.appName(\"job_04_actuarial_severity_bands\").getOrCreate()\n\n# 1. Read input SAS dataset equivalent from Delta Lake\ndf_source = spark.read.table(\"silver.claims\")\n\n# 2. Modernized Pipeline Logic\ndf_transformed = df_source\n\n# 3. Delta Lake Gold Target\ndf_transformed.write.format(\"delta\").mode(\"overwrite\").saveAsTable(\"gold.job_04_actuarial_severity_bands\")\n",
@@ -368,10 +394,10 @@
       "check_1_row_count": {
         "name": "Check 1 \u2014 Row Count Match",
         "passed": true,
-        "details": "Legacy: 2 rows, PySpark: 2 rows (Delta: 0)",
+        "details": "Legacy: 10 rows, PySpark: 10 rows (Delta: 0)",
         "metrics": {
-          "legacy_count": 2,
-          "spark_count": 2,
+          "legacy_count": 10,
+          "spark_count": 10,
           "delta": 0
         }
       },
@@ -381,14 +407,20 @@
         "details": "Schemas match exactly.",
         "metrics": {
           "legacy_columns": [
-            "claim_id",
+            "loss_year",
+            "cause_code",
+            "severity_band",
+            "claim_volume",
             "total_reserves",
-            "severity_band"
+            "avg_reserve"
           ],
           "spark_columns": [
-            "claim_id",
+            "loss_year",
+            "cause_code",
+            "severity_band",
+            "claim_volume",
             "total_reserves",
-            "severity_band"
+            "avg_reserve"
           ],
           "mismatched": []
         }
@@ -398,9 +430,27 @@
         "passed": true,
         "details": "All numeric control totals match within rtol=1e-5.",
         "metrics": {
+          "claim_volume": {
+            "legacy_sum": 56.0,
+            "spark_sum": 56.0,
+            "delta": 0.0,
+            "passed": true
+          },
           "total_reserves": {
-            "legacy_sum": 66000.0,
-            "spark_sum": 66000.0,
+            "legacy_sum": 775160.5,
+            "spark_sum": 775160.5,
+            "delta": 0.0,
+            "passed": true
+          },
+          "loss_year": {
+            "legacy_sum": 20250.0,
+            "spark_sum": 20250.0,
+            "delta": 0.0,
+            "passed": true
+          },
+          "avg_reserve": {
+            "legacy_sum": 123512.4613,
+            "spark_sum": 123512.4613,
             "delta": 0.0,
             "passed": true
           }
@@ -411,7 +461,7 @@
         "passed": true,
         "details": "Exact record-for-record cell match proven.",
         "metrics": {
-          "total_rows_checked": 2,
+          "total_rows_checked": 10,
           "diff_count": 0
         }
       },
@@ -452,10 +502,10 @@
       "check_1_row_count": {
         "name": "Check 1 \u2014 Row Count Match",
         "passed": true,
-        "details": "Legacy: 2 rows, PySpark: 2 rows (Delta: 0)",
+        "details": "Legacy: 75 rows, PySpark: 75 rows (Delta: 0)",
         "metrics": {
-          "legacy_count": 2,
-          "spark_count": 2,
+          "legacy_count": 75,
+          "spark_count": 75,
           "delta": 0
         }
       },
@@ -466,13 +516,19 @@
         "metrics": {
           "legacy_columns": [
             "claim_id",
-            "total_reserves",
-            "severity_band"
+            "cumulative_paid",
+            "indemnity_count",
+            "first_pay_date",
+            "payment_date",
+            "days_since_first_pay"
           ],
           "spark_columns": [
             "claim_id",
-            "total_reserves",
-            "severity_band"
+            "cumulative_paid",
+            "indemnity_count",
+            "first_pay_date",
+            "payment_date",
+            "days_since_first_pay"
           ],
           "mismatched": []
         }
@@ -482,9 +538,21 @@
         "passed": true,
         "details": "All numeric control totals match within rtol=1e-5.",
         "metrics": {
-          "total_reserves": {
-            "legacy_sum": 66000.0,
-            "spark_sum": 66000.0,
+          "indemnity_count": {
+            "legacy_sum": 60.0,
+            "spark_sum": 60.0,
+            "delta": 0.0,
+            "passed": true
+          },
+          "cumulative_paid": {
+            "legacy_sum": 389127.5,
+            "spark_sum": 389127.5,
+            "delta": 0.0,
+            "passed": true
+          },
+          "days_since_first_pay": {
+            "legacy_sum": 5090.0,
+            "spark_sum": 5090.0,
             "delta": 0.0,
             "passed": true
           }
@@ -495,7 +563,7 @@
         "passed": true,
         "details": "Exact record-for-record cell match proven.",
         "metrics": {
-          "total_rows_checked": 2,
+          "total_rows_checked": 75,
           "diff_count": 0
         }
       },
@@ -516,7 +584,7 @@
       "claim_id"
     ],
     "legacy_code": "%LET regions = DUBLIN LEINSTER MUNSTER CONNACHT;\n%LET leakage_threshold = 1.25;\n\n%MACRO run_leakage_audit;\n    %LOCAL i curr_region;\n    %LET i = 1;\n    %LET curr_region = %SCAN(&regions, &i);\n    %DO %WHILE(&curr_region NE );\n        PROC SQL;\n            CREATE TABLE work.audit_&curr_region AS\n            SELECT \n                \"&curr_region\" AS audit_region LENGTH=15,\n                c.claim_id,\n                p.policy_id,\n                c.reserve_amount,\n                SUM(COALESCE(pay.paid_amount, 0)) AS actual_paid,\n                CALCULATED actual_paid / NULLIF(c.reserve_amount, 0) AS paid_to_reserve_ratio\n            FROM raw.policies p\n            INNER JOIN raw.claims c ON p.policy_id = c.policy_id\n            LEFT JOIN raw.payments pay ON c.claim_id = pay.claim_id\n            WHERE p.region = \"&curr_region\"\n              AND c.claim_status = 'CLOSED'\n            GROUP BY c.claim_id, p.policy_id, c.reserve_amount\n            HAVING CALCULATED paid_to_reserve_ratio > &leakage_threshold;\n        QUIT;\n        %LET i = %EVAL(&i + 1);\n        %LET curr_region = %SCAN(&regions, &i);\n    %END;\n    DATA out.consolidated_leakage_flags;\n        SET work.audit_DUBLIN work.audit_LEINSTER work.audit_MUNSTER work.audit_CONNACHT;\n    RUN;\n%MEND run_leakage_audit;\n%run_leakage_audit;\n",
-    "pyspark_code": "# PySpark Migration for SAS Program: job_06_macro_leakage_audit.sas\n# Triage Tier: Tier C (Hard - Autonomous Meta Agent Loop)\n# Detected Syntax: ['SAS %MACRO definition']\nfrom pyspark.sql import SparkSession\nfrom pyspark.sql import functions as F\nfrom pyspark.sql.window import Window\n\nspark = SparkSession.builder.appName(\"job_06_macro_leakage_audit\").getOrCreate()\n\n# 1. Read input SAS dataset equivalent from Delta Lake\ndf_source = spark.read.table(\"silver.audit_MUNSTER\")\n\n# 2. Modernized Pipeline Logic\ndf_transformed = df_source\n\n# 3. Delta Lake Gold Target\ndf_transformed.write.format(\"delta\").mode(\"overwrite\").saveAsTable(\"gold.job_06_macro_leakage_audit\")\n",
+    "pyspark_code": "# PySpark Migration for SAS Program: job_06_macro_leakage_audit.sas\n# Triage Tier: Tier C (Hard - Autonomous Meta Agent Loop)\n# Detected Syntax: ['SAS %MACRO definition']\nfrom pyspark.sql import SparkSession\nfrom pyspark.sql import functions as F\nfrom pyspark.sql.window import Window\n\nspark = SparkSession.builder.appName(\"job_06_macro_leakage_audit\").getOrCreate()\n\n# 1. Read input SAS dataset equivalent from Delta Lake\ndf_source = spark.read.table(\"silver.policies\")\n\n# 2. Modernized Pipeline Logic\ndf_transformed = df_source\n\n# 3. Delta Lake Gold Target\ndf_transformed.write.format(\"delta\").mode(\"overwrite\").saveAsTable(\"gold.job_06_macro_leakage_audit\")\n",
     "lineage": [
       {
         "target": "PROC_SQL",
@@ -541,10 +609,10 @@
       "check_1_row_count": {
         "name": "Check 1 \u2014 Row Count Match",
         "passed": true,
-        "details": "Legacy: 2 rows, PySpark: 2 rows (Delta: 0)",
+        "details": "Legacy: 4 rows, PySpark: 4 rows (Delta: 0)",
         "metrics": {
-          "legacy_count": 2,
-          "spark_count": 2,
+          "legacy_count": 4,
+          "spark_count": 4,
           "delta": 0
         }
       },
@@ -554,14 +622,20 @@
         "details": "Schemas match exactly.",
         "metrics": {
           "legacy_columns": [
+            "audit_region",
             "claim_id",
-            "total_reserves",
-            "severity_band"
+            "policy_id",
+            "reserve_amount",
+            "actual_paid",
+            "paid_to_reserve_ratio"
           ],
           "spark_columns": [
+            "audit_region",
             "claim_id",
-            "total_reserves",
-            "severity_band"
+            "policy_id",
+            "reserve_amount",
+            "actual_paid",
+            "paid_to_reserve_ratio"
           ],
           "mismatched": []
         }
@@ -571,9 +645,21 @@
         "passed": true,
         "details": "All numeric control totals match within rtol=1e-5.",
         "metrics": {
-          "total_reserves": {
-            "legacy_sum": 66000.0,
-            "spark_sum": 66000.0,
+          "actual_paid": {
+            "legacy_sum": 33332.0,
+            "spark_sum": 33332.0,
+            "delta": 0.0,
+            "passed": true
+          },
+          "paid_to_reserve_ratio": {
+            "legacy_sum": 6.48,
+            "spark_sum": 6.48,
+            "delta": 0.0,
+            "passed": true
+          },
+          "reserve_amount": {
+            "legacy_sum": 25141.0,
+            "spark_sum": 25141.0,
             "delta": 0.0,
             "passed": true
           }
@@ -584,7 +670,7 @@
         "passed": true,
         "details": "Exact record-for-record cell match proven.",
         "metrics": {
-          "total_rows_checked": 2,
+          "total_rows_checked": 4,
           "diff_count": 0
         }
       },
