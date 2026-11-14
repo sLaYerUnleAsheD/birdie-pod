@@ -1,0 +1,24 @@
+id: tsql_06
+dialect: tsql
+oracle_kind: sqlserver
+description: Monthly loss ratio. Trap: int/int division, EOMONTH and DATEDIFF month boundaries.
+inputs:
+  policy:
+    product: string
+    inception_date: date
+    expiry_date: date
+    claim_units: int
+    policy_count: int
+outputs:
+  monthly_loss_ratio:
+    key: [product]
+    cols:
+      product: string
+      month_end: date
+      next_day: date
+      claims_per_policy: int
+      span_months: int
+edge_hints:
+  policy.inception_date: ["2024-01-31", "2024-02-29"]
+  policy.claim_units: ["5", "-5", "0"]
+  policy.policy_count: ["2", "0"]

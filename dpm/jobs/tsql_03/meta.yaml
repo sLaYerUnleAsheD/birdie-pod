@@ -1,0 +1,20 @@
+id: tsql_03
+dialect: tsql
+oracle_kind: sqlserver
+description: Top-N open claims. Trap: TOP needs ORDER BY, ties broken by claim_id, ISNULL, CI compare.
+inputs:
+  claim:
+    claim_id: string
+    policy_id: string
+    status: string
+    reserve: decimal(12,2)
+outputs:
+  top_open_claims:
+    key: [claim_id]
+    cols:
+      claim_id: string
+      policy_id: string
+      reserve_filled: decimal(12,2)
+edge_hints:
+  claim.status: ["open", "OPEN"]
+  claim.reserve: ["", "0.00"]

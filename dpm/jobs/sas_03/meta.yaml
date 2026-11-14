@@ -1,0 +1,22 @@
+id: sas_03
+dialect: sas
+oracle_kind: sas-snapshot
+description: MERGE with IN= flags. Trap: many-to-many merge, IN= logic.
+inputs:
+  policies:
+    policy_id: string
+    product: string
+  claims:
+    policy_id: string
+    claim_id: string
+    paid: decimal(12,2)
+outputs:
+  policy_claim_merged:
+    key: [policy_id, claim_id]
+    cols:
+      policy_id: string
+      claim_id: string
+      product: string
+      paid: decimal(12,2)
+      has_claim: int
+

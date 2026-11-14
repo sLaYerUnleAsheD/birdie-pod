@@ -1,0 +1,131 @@
+{
+  "workflow_id": "aegis_modernize_daily_batch",
+  "description": "Orchestrated Azure Databricks Delta Lake batch processing pipeline.",
+  "schedule": {
+    "cron": "0 2 * * *",
+    "timezone": "UTC"
+  },
+  "default_sla_minutes": 60,
+  "tasks": [
+    {
+      "task_id": "task_sas_01",
+      "job_id": "sas_01",
+      "dialect": "sas",
+      "tier": "A",
+      "depends_on": [],
+      "sla_minutes": 15,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_sas_02",
+      "job_id": "sas_02",
+      "dialect": "sas",
+      "tier": "B",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_sas_03",
+      "job_id": "sas_03",
+      "dialect": "sas",
+      "tier": "C",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_sas_04",
+      "job_id": "sas_04",
+      "dialect": "sas",
+      "tier": "C",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_01",
+      "job_id": "tsql_01",
+      "dialect": "tsql",
+      "tier": "A",
+      "depends_on": [],
+      "sla_minutes": 15,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_02",
+      "job_id": "tsql_02",
+      "dialect": "tsql",
+      "tier": "A",
+      "depends_on": [],
+      "sla_minutes": 15,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_03",
+      "job_id": "tsql_03",
+      "dialect": "tsql",
+      "tier": "A",
+      "depends_on": [],
+      "sla_minutes": 15,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_04",
+      "job_id": "tsql_04",
+      "dialect": "tsql",
+      "tier": "B",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_05",
+      "job_id": "tsql_05",
+      "dialect": "tsql",
+      "tier": "B",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_06",
+      "job_id": "tsql_06",
+      "dialect": "tsql",
+      "tier": "A",
+      "depends_on": [],
+      "sla_minutes": 15,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_07",
+      "job_id": "tsql_07",
+      "dialect": "tsql",
+      "tier": "C",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_08",
+      "job_id": "tsql_08",
+      "dialect": "tsql",
+      "tier": "C",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    }
+  ]
+}

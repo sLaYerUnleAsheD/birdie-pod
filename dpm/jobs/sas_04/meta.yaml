@@ -1,0 +1,18 @@
+id: sas_04
+dialect: sas
+oracle_kind: sas-snapshot
+description: RETAIN cumulative + FIRST./LAST. Trap: BY-group reset.
+inputs:
+  claim_tx:
+    policy_id: string
+    tx_date: date
+    tx_amount: decimal(12,2)
+outputs:
+  claim_cumulative:
+    key: [policy_id, tx_date]
+    cols:
+      policy_id: string
+      tx_date: date
+      tx_amount: decimal(12,2)
+      cumulative_paid: decimal(18,2)
+

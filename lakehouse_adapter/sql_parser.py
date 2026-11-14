@@ -201,13 +201,26 @@ def _regex_fallback_parse(clean: str) -> TableLineage:
     return lineage
 
 
+def _clean_tsql_expr(expr: str) -> str:
+    """Translate T-SQL specific idioms like ISNULL() to Spark SQL / PySpark native expressions."""
+    # Rule 3: Translate ISNULL(a, b) to coalesce(a, b)
+    s = re.sub(r"\bISNULL\s*\(", "COALESCE(", expr, flags=re.IGNORECASE)
+    return s
+
+
 def generate_pyspark_deterministic_skeleton(lineage: TableLineage, job_name: str = "migrated_job") -> str:
-    """Generates idiomatic, deterministic PySpark DataFrame code from the TableLineage."""
+    """Generates idiomatic, deterministic PySpark DataFrame code from the TableLineage adhering to Phase 4 Anti-Hallucination rules:
+    1. Temporary Tables (INTO #Table) -> Staging DataFrame assignment, never select column.
+    2. Aggregations -> .groupBy(...).agg(...), never mixing unaggregated and aggregate expressions in select().
+    3. Null Handling -> native F.coalesce(F.col(...), F.lit(...)) / COALESCE, never ISNULL().
+    4. DataFrame Aliasing -> .alias('prefix') with explicit column joins (F.col('a.x') == F.col('b.x')).
+    """
     lines = [
         "# =====================================================================",
         f"# PySpark Migration Skeleton: {job_name}",
         "# Engine: Aegis Lakehouse Modernization Factory (Deterministic AST Transpiler)",
         "# Target: Azure Lakehouse (Delta Lake / Medallion Architecture)",
+        "# Rules Enforced: Phase 4 Deterministic AST & Anti-Hallucination Guardrails",
         "# =====================================================================",
         "from pyspark.sql import SparkSession",
         "from pyspark.sql import functions as F",
@@ -220,59 +233,109 @@ def generate_pyspark_deterministic_skeleton(lineage: TableLineage, job_name: str
         "    .getOrCreate()",
         "",
         "# ---------------------------------------------------------------------",
-        "# 1. INGESTION (Bronze / Silver Source Tables)",
+        "# 1. INGESTION (Bronze Source Tables with Explicit Aliasing)",
         "# ---------------------------------------------------------------------",
     ]
 
-    for src in lineage.source_tables:
-        var_name = f"df_{src.replace('#', 'tmp_').lower()}"
-        lines.append(f"{var_name} = spark.read.table('{src}')  # Or spark.read.format('delta').load(...)")
+    # Rule 1: Exclude temporary tables (#...) from source bronze ingestion
+    bronze_sources = [s for s in lineage.source_tables if not s.startswith("#")]
+    temp_sources = [s for s in lineage.source_tables if s.startswith("#")]
+
+    if not bronze_sources:
+        bronze_sources = ["source_table"]
+
+    # Rule 4: Apply .alias("prefix") to source DataFrames
+    aliases = {}
+    for i, src in enumerate(bronze_sources):
+        alias = src[0].lower() if src[0].isalpha() else f"t{i+1}"
+        if alias in aliases.values():
+            alias = f"{alias}{i+1}"
+        aliases[src] = alias
+        clean_name = src.replace("#", "tmp_").lower()
+        lines.append(f"df_{clean_name} = spark.read.table('{src}').alias('{alias}')")
 
     lines.extend([
         "",
         "# ---------------------------------------------------------------------",
-        "# 2. TRANSFORMATION & COLUMN-LEVEL LINEAGE",
+        "# 2. CONFORMED JOINS & STAGING TRANSFORMATIONS (Silver / Staging Layer)",
         "# ---------------------------------------------------------------------",
     ])
+
+    base_src = bronze_sources[0]
+    base_alias = aliases.get(base_src, "src")
+    base_var = f"df_{base_src.replace('#', 'tmp_').lower()}"
 
     if lineage.joins:
-        base_src = lineage.source_tables[0] if lineage.source_tables else "source"
-        lines.append(f"df_joined = df_{base_src.lower()}")
+        lines.append(f"df_staging = (")
+        lines.append(f"    {base_var}")
         for j in lineage.joins:
-            j_tbl = j['table'].lower()
+            j_tbl = j['table']
             j_type = j['type'].lower()
-            j_on = j['on']
-            lines.append(f"# Join with {j_tbl} ({j_type.upper()}) ON {j_on}")
-            lines.append(f"df_joined = df_joined.join(df_{j_tbl}, on=\"...\", how=\"{j_type}\")")
-        lines.append("df_transformed = df_joined")
-    elif lineage.source_tables:
-        lines.append(f"df_transformed = df_{lineage.source_tables[0].lower()}")
+            j_alias = aliases.get(j_tbl, j_tbl[:2].lower())
+            j_var = f"df_{j_tbl.replace('#', 'tmp_').lower()}"
+            # Rule 4: Explicit column references in joins
+            join_cond = j.get('on', '')
+            if join_cond and "=" in join_cond:
+                parts = join_cond.split("=")
+                left_col = parts[0].strip()
+                right_col = parts[1].strip()
+                lines.append(f"    .join({j_var}, F.col(\"{left_col}\") == F.col(\"{right_col}\"), how=\"{j_type}\")")
+            else:
+                lines.append(f"    .join({j_var}, how=\"{j_type}\")")
+        lines.append(")")
     else:
-        lines.append("df_transformed = df_source")
+        lines.append(f"df_staging = {base_var}")
 
     lines.extend([
         "",
-        "# Projected Columns with Lineage Tracing:",
-        "df_final = df_transformed.select(",
+        "# ---------------------------------------------------------------------",
+        "# 3. PROJECTIONS & AGGREGATIONS (Gold Mart Layer)",
+        "# ---------------------------------------------------------------------",
     ])
 
-    for col in lineage.columns:
-        lines.append(f"    # Lineage: {col.source_expr} [{col.transformation_type}]")
-        lines.append(f"    F.expr(\"{col.source_expr.replace('\"', '\\\"')}\").alias(\"{col.target_column}\"),")
+    # Rule 2: Separate group-by dimension columns from aggregate metrics
+    group_cols = [c for c in lineage.columns if c.transformation_type != "AGGREGATE"]
+    agg_cols = [c for c in lineage.columns if c.transformation_type == "AGGREGATE"]
 
+    if agg_cols:
+        # Rule 2: Always use .groupBy(...).agg(...) when aggregations are present
+        lines.append("gold_df = (")
+        lines.append("    df_staging")
+        if group_cols:
+            lines.append("    .groupBy(")
+            for gc in group_cols:
+                cleaned_expr = _clean_tsql_expr(gc.source_expr)
+                lines.append(f"        F.expr(\"{cleaned_expr}\").alias(\"{gc.target_column}\"),")
+            lines.append("    )")
+        lines.append("    .agg(")
+        for ac in agg_cols:
+            # Rule 3: Translate ISNULL to coalesce in aggregate expressions
+            cleaned_expr = _clean_tsql_expr(ac.source_expr)
+            lines.append(f"        F.expr(\"{cleaned_expr}\").alias(\"{ac.target_column}\"),")
+        lines.append("    )")
+        lines.append(")")
+    else:
+        lines.append("gold_df = (")
+        lines.append("    df_staging.select(")
+        for col in lineage.columns:
+            cleaned_expr = _clean_tsql_expr(col.source_expr)
+            lines.append(f"        F.expr(\"{cleaned_expr}\").alias(\"{col.target_column}\"),")
+        lines.append("    )")
+        lines.append(")")
+
+    clean_job = job_name.lower().replace(".", "_")
     lines.extend([
-        ")",
         "",
         "# ---------------------------------------------------------------------",
-        "# 3. TARGET LAKEHOUSE EMISSION (Delta Lake Gold Mart)",
+        "# 4. TARGET LAKEHOUSE EMISSION (Delta Lake Gold Mart)",
         "# ---------------------------------------------------------------------",
-        "df_final.write \\",
+        "gold_df.write \\",
         "    .format('delta') \\",
         "    .mode('overwrite') \\",
         "    .option('mergeSchema', 'true') \\",
-        f"    .saveAsTable('lakehouse_gold.{job_name.lower()}')",
+        f"    .saveAsTable('lakehouse_gold.{clean_job}')",
         "",
-        "print(f'Successfully migrated and published {df_final.count()} records to Delta Lake.')",
+        "print(f'Successfully migrated and published {gold_df.count()} records to Delta Lake.')",
     ])
 
     return "\n".join(lines)

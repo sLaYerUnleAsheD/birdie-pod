@@ -1,11 +1,11 @@
-import { state, subscribe, boot, parseHash, setPage, ensureRun, openProgramPath, closeCompare } from "./store.js?v=meta_3pane_v10";
+import { state, subscribe, boot, parseHash, setPage, ensureRun, openProgramPath, closeCompare } from "./store.js?v=meta_3pane_v12";
 import { clear } from "./views/dom.js";
 import { renderExplorer } from "./views/explorer.js";
 import { renderResults } from "./views/results.js";
 import { renderFailures } from "./views/failures.js";
 import { renderVerifier } from "./views/verifier.js";
 import { renderAbout } from "./views/about.js";
-import { renderModernize } from "./views/modernize.js?v=meta_3pane_v10";
+import { renderModernize } from "./views/modernize.js?v=meta_3pane_v12";
 
 const main = document.getElementById("main");
 

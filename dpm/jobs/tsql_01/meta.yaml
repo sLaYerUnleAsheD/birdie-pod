@@ -1,0 +1,17 @@
+id: tsql_01
+dialect: tsql
+oracle_kind: sqlserver
+description: Premium by product. Trap: SUM of DECIMAL must stay exact (not float).
+inputs:
+  policy:
+    policy_id: string
+    product: string
+    premium: decimal(12,2)
+outputs:
+  premium_by_product:
+    key: [product]
+    cols:
+      product: string
+      total_premium: decimal(18,2)
+edge_hints:
+  policy.premium: ["0.00", "-1.25", "0.10", "0.20"]

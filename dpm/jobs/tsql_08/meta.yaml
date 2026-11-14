@@ -1,0 +1,26 @@
+id: tsql_08
+dialect: tsql
+oracle_kind: sqlserver
+description: Policy snapshot MERGE. Trap: matched update and not-matched insert.
+inputs:
+  policy_snapshot:
+    policy_id: string
+    product: string
+    premium: decimal(12,2)
+    status: string
+  policy_delta:
+    policy_id: string
+    product: string
+    premium: decimal(12,2)
+    status: string
+    action: string
+outputs:
+  policy_snapshot:
+    key: [policy_id]
+    cols:
+      policy_id: string
+      product: string
+      premium: decimal(12,2)
+      status: string
+edge_hints:
+  policy_delta.action: ["U", "I", "X"]

@@ -1,0 +1,21 @@
+id: tsql_04
+dialect: tsql
+oracle_kind: sqlserver
+description: Running reserve. Trap: default window frame is RANGE (peers share a sum), not ROWS.
+inputs:
+  claim:
+    claim_id: string
+    policy_id: string
+    loss_date: date
+    reserve: decimal(12,2)
+outputs:
+  running_reserve:
+    key: [claim_id]
+    cols:
+      claim_id: string
+      policy_id: string
+      loss_date: date
+      reserve: decimal(12,2)
+      running_reserve: decimal(18,2)
+edge_hints:
+  claim.loss_date: ["2024-02-29", "2024-02-29"]

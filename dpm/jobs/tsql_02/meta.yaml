@@ -1,0 +1,19 @@
+id: tsql_02
+dialect: tsql
+oracle_kind: sqlserver
+description: Claims by region and status. Trap: CI collation groups 'open' with 'OPEN'.
+inputs:
+  claim:
+    region: string
+    status: string
+    reserve: decimal(12,2)
+outputs:
+  claims_by_region_status:
+    key: [region, status]
+    cols:
+      region: string
+      status: string
+      claim_count: int
+      total_reserve: decimal(18,2)
+edge_hints:
+  claim.status: ["open", "OPEN", "Open", "closed"]

@@ -1,0 +1,18 @@
+id: tsql_07
+dialect: tsql
+oracle_kind: sqlserver
+description: Reserve waterfall. Trap: WHILE loop over a #temp table (procedural).
+inputs:
+  claim:
+    claim_id: string
+    status: string
+    reserve: decimal(12,2)
+outputs:
+  reserve_waterfall:
+    key: [step_n, claim_id]
+    cols:
+      step_n: int
+      claim_id: string
+      reserve: decimal(12,2)
+edge_hints:
+  claim.reserve: ["", "0.00", "-10.00"]

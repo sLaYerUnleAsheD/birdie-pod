@@ -526,6 +526,10 @@ def execute_sample_tsql(con: sqlite3.Connection = None) -> tuple[Any, Any]:
     cols = [d[0] for d in cur.description]
     raw_rows = cur.fetchall()
     legacy_records = [dict(zip(cols, row)) for row in raw_rows]
+    try:
+        con.close()
+    except Exception:
+        pass
 
     # Migrated PySpark Simulation in pure Python:
     pol_map = {p[0]: (p[1], p[2]) for p in policies_data}
@@ -561,36 +565,41 @@ def execute_sample_tsql(con: sqlite3.Connection = None) -> tuple[Any, Any]:
 def run_all_end_to_end() -> list[dict[str, Any]]:
     con = create_sqlite_session()
     results = []
+    try:
+        jobs = [
+            ("job_01_regional_loss_summary", lambda: execute_job_01(con), ["region", "product_line"]),
+            ("job_02_reporting_lag", lambda: execute_job_02(con), ["claim_id"]),
+            ("job_03_cumulative_exposure", lambda: execute_job_03(con), ["claim_id"]),
+            ("job_04_actuarial_severity_bands", execute_job_04, ["loss_year", "cause_code", "severity_band"]),
+            ("job_05_payment_trajectory", execute_job_05, ["claim_id"]),
+            ("job_06_macro_leakage_audit", execute_job_06, ["audit_region", "claim_id"]),
+            ("job_sample_tsql_monthly_claims", lambda: execute_sample_tsql(con), ["ReportMonth", "PolicyType", "CustomerRegion"]),
+        ]
 
-    jobs = [
-        ("job_01_regional_loss_summary", lambda: execute_job_01(con), ["region", "product_line"]),
-        ("job_02_reporting_lag", lambda: execute_job_02(con), ["claim_id"]),
-        ("job_03_cumulative_exposure", lambda: execute_job_03(con), ["claim_id"]),
-        ("job_04_actuarial_severity_bands", execute_job_04, ["loss_year", "cause_code", "severity_band"]),
-        ("job_05_payment_trajectory", execute_job_05, ["claim_id"]),
-        ("job_06_macro_leakage_audit", execute_job_06, ["audit_region", "claim_id"]),
-        ("job_sample_tsql_monthly_claims", lambda: execute_sample_tsql(con), ["ReportMonth", "PolicyType", "CustomerRegion"]),
-    ]
+        for job_id, runner, pk in jobs:
+            legacy_df, spark_df = runner()
+            # Save output CSVs
+            legacy_df.to_csv(OUTPUTS_DIR / f"{job_id}_legacy.csv", index=False)
+            spark_df.to_csv(OUTPUTS_DIR / f"{job_id}_spark.csv", index=False)
 
-    for job_id, runner, pk in jobs:
-        legacy_df, spark_df = runner()
-        # Save output CSVs
-        legacy_df.to_csv(OUTPUTS_DIR / f"{job_id}_legacy.csv", index=False)
-        spark_df.to_csv(OUTPUTS_DIR / f"{job_id}_spark.csv", index=False)
+            scorecard = reconcile_dataframes(
+                legacy_data=legacy_df.to_dict(orient="records"),
+                spark_data=spark_df.to_dict(orient="records"),
+                primary_keys=pk,
+                job_id=job_id,
+            )
 
-        scorecard = reconcile_dataframes(
-            legacy_data=legacy_df.to_dict(orient="records"),
-            spark_data=spark_df.to_dict(orient="records"),
-            primary_keys=pk,
-            job_id=job_id,
-        )
-
-        results.append({
-            "job_id": job_id,
-            "row_count": len(legacy_df),
-            "columns": list(legacy_df.columns),
-            "scorecard": scorecard.to_dict(),
-        })
+            results.append({
+                "job_id": job_id,
+                "row_count": len(legacy_df),
+                "columns": list(legacy_df.columns),
+                "scorecard": scorecard.to_dict(),
+            })
+    finally:
+        try:
+            con.close()
+        except Exception:
+            pass
 
     return results
 
