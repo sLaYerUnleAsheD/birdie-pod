@@ -1,7 +1,7 @@
 id: tsql_04
 dialect: tsql
 oracle_kind: sqlserver
-description: Running reserve. Trap: default window frame is RANGE (peers share a sum), not ROWS.
+description: "Running reserve. Trap: default window frame is RANGE (peers share a sum), not ROWS."
 inputs:
   claim:
     claim_id: string

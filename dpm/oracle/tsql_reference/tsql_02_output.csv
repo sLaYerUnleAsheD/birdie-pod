@@ -1,0 +1,5 @@
+region,status,claim_count,total_reserve
+VAL_1,OPEN,1,1500.50
+VAL_2,OPEN,2,2000.75
+VAL_3,OPEN,3,2501.00
+VAL_4,OPEN,4,3001.25

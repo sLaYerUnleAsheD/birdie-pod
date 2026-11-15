@@ -1,7 +1,7 @@
 id: tsql_05
 dialect: tsql
 oracle_kind: sqlserver
-description: Latest claim per policy. Trap: ROW_NUMBER tie-break on claim_id when loss dates match.
+description: "Latest claim per policy. Trap: ROW_NUMBER tie-break on claim_id when loss dates match."
 inputs:
   claim:
     claim_id: string

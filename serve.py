@@ -3,7 +3,7 @@ import socketserver
 import os
 import sys
 
-PORT = 8000
+PORT = int(os.environ.get("PORT", 8000))
 viewer_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "viewer")
 os.chdir(viewer_dir)
 

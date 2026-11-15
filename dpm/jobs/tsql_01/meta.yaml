@@ -1,7 +1,7 @@
 id: tsql_01
 dialect: tsql
 oracle_kind: sqlserver
-description: Premium by product. Trap: SUM of DECIMAL must stay exact (not float).
+description: "Premium by product. Trap: SUM of DECIMAL must stay exact (not float)."
 inputs:
   policy:
     policy_id: string

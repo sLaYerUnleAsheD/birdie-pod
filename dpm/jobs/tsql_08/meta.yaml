@@ -1,7 +1,7 @@
 id: tsql_08
 dialect: tsql
 oracle_kind: sqlserver
-description: Policy snapshot MERGE. Trap: matched update and not-matched insert.
+description: "Policy snapshot MERGE. Trap: matched update and not-matched insert."
 inputs:
   policy_snapshot:
     policy_id: string

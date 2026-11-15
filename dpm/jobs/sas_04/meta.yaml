@@ -1,7 +1,7 @@
 id: sas_04
 dialect: sas
 oracle_kind: sas-snapshot
-description: RETAIN cumulative + FIRST./LAST. Trap: BY-group reset.
+description: "RETAIN cumulative + FIRST./LAST. Trap: BY-group reset."
 inputs:
   claim_tx:
     policy_id: string

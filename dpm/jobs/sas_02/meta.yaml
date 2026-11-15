@@ -1,7 +1,7 @@
 id: sas_02
 dialect: sas
 oracle_kind: sas-snapshot
-description: DATA step clean + SORT NODUPKEY + MEANS. Trap: missing values, NODUPKEY keeps first.
+description: "DATA step clean + SORT NODUPKEY + MEANS. Trap: missing values, NODUPKEY keeps first."
 inputs:
   claims_raw:
     claim_id: string

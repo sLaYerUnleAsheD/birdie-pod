@@ -1,7 +1,7 @@
 id: sas_03
 dialect: sas
 oracle_kind: sas-snapshot
-description: MERGE with IN= flags. Trap: many-to-many merge, IN= logic.
+description: "MERGE with IN= flags. Trap: many-to-many merge, IN= logic."
 inputs:
   policies:
     policy_id: string

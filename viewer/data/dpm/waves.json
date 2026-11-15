@@ -4,6 +4,8 @@
     "sas_02",
     "sas_03",
     "sas_04",
+    "sas_05",
+    "sas_06",
     "tsql_01",
     "tsql_02",
     "tsql_03",
@@ -11,6 +13,9 @@
     "tsql_05",
     "tsql_06",
     "tsql_07",
-    "tsql_08"
+    "tsql_08",
+    "tsql_09",
+    "tsql_10",
+    "tsql_11"
   ]
 ]
