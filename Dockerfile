@@ -22,4 +22,5 @@ RUN mkdir -p /gocache /tmp/warm \
  && rm -rf /tmp/warm /tmp/warmup_main.go
 
 COPY . .
-CMD ["pytest", "-q"]
+EXPOSE 8000
+CMD ["python3", "serve.py"]

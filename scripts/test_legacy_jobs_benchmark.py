@@ -25,8 +25,7 @@ from lakehouse_adapter.reconcile import reconcile_dataframes
 def test_legacy_benchmark():
     benchmark_dir = Path("benchmark/legacy_jobs")
     if not benchmark_dir.exists():
-        print(f"Error: {benchmark_dir} not found!")
-        return False
+        assert False, f"Error: {benchmark_dir} not found!"
 
     tsql_dir = benchmark_dir / "tsql"
     sas_dir = benchmark_dir / "sas"
@@ -101,7 +100,8 @@ def test_legacy_benchmark():
     print("  Determinism: 100% Deterministic AST & 3-Tier Routing Validated.")
     print("  Challenge 03 Modernization Factory: FULLY OPERATIONAL.")
     print("=" * 80)
-    return passed_jobs == total_jobs
+    assert passed_jobs == total_jobs, f"Only {passed_jobs}/{total_jobs} passed"
+    return True
 
 
 if __name__ == "__main__":
