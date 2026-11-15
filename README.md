@@ -1,9 +1,10 @@
-# EXL: Agentic Data Platform Modernisation
+# EXLake.ai: Agentic Data Platform Modernisation
 ### Legacy T-SQL ETL & SAS Programs to Azure Lakehouse (PySpark + Delta Lake)
 
+> **Repository:** [https://github.com/sLaYerUnleAsheD/birdie-pod](https://github.com/sLaYerUnleAsheD/birdie-pod)  
 > **EXL Data & AI Hackathon — Challenge 03: Agentic Data Platform Modernisation**  
 > Tracks: **GenAI & Agents** | **Data Engineering** | **Responsible AI**  
-> *Bonus Deliverable Included:* Aegis Evidence Layer (COBOL → Go byte-level verification engine).
+> *Bonus Deliverable Included:* EXLake.ai Evidence Layer (COBOL → Go byte-level verification engine).
 
 ---
 
@@ -15,13 +16,13 @@ A large UK and Ireland insurer runs finance, actuarial, and claims reporting acr
 - Upstream migrations fail because manual code translations hallucinate edge cases, date math, and joins.
 - **Every migrated cloud pipeline must prove exact output reconciliation** with historical legacy baseline extracts before cutover.
 
-**Aegis Modernize** is an AI-native agentic migration factory that deterministically parses, translates, and mathematically reconciles legacy T-SQL and SAS jobs to cloud-native **PySpark on an Azure Lakehouse (Medallion Delta architecture)**.
+**EXLake.ai** is an AI-native agentic migration factory that deterministically parses, translates, and mathematically reconciles legacy T-SQL and SAS jobs to cloud-native **PySpark on an Azure Lakehouse (Medallion Delta architecture)**.
 
 ---
 
 ## 3-Tier Anti-Hallucination Routing Architecture (`dpm/router.py`)
 
-Relying entirely on LLMs to generate SQL translations produces silent hallucinations (scope leaks, implicit datatype conversions, and phantom joins). Aegis enforces a strict **3-Tier Routing Triage** using AST analysis and robust lexical pre-scanning before any code generation:
+Relying entirely on LLMs to generate SQL translations produces silent hallucinations (scope leaks, implicit datatype conversions, and phantom joins). EXLake.ai enforces a strict **3-Tier Routing Triage** using AST analysis and robust lexical pre-scanning before any code generation:
 
 ```
                             [ Legacy Script (.sql / .sas) ]
@@ -39,15 +40,15 @@ Relying entirely on LLMs to generate SQL translations produces silent hallucinat
   • SAS: Pure PROC SQL only        • SAS: DATA + PROC SORT/MEANS    • SAS: RETAIN, FIRST./LAST., %MACRO
          │                                │                                │
          ▼                                ▼                                ▼
-   sqlglot AST Engine             AST Skeleton + Meta LLM           Autonomous Meta Agent
+   sqlglot AST Engine       AST + Meta LLM / Claude skill     Meta LLM / Claude Skill Agent
 ($0 Token Cost, Deterministic)  (Lineage Annotations + PySpark)  (Self-Healing Reconciliation Loop)
 ```
 
 | Tier | T-SQL Characteristics | SAS Characteristics | Engine & Tooling | Token Cost | Parity Gate |
 |---|---|---|---|---|---|
 | **Tier A (Easy)** | Standard relational `SELECT`, `INNER/LEFT JOIN`, `WHERE`, `GROUP BY`, `#temp` staging | Pure `PROC SQL; ... QUIT;` (No `DATA` steps, no `%MACRO`) | `sqlglot` AST transpiler (`tsql` $\to$ `spark`) | **$0.000** | 100% Deterministic |
-| **Tier B (Medium)** | CTEs (`WITH ... AS`), Windowing (`OVER(...)`), `PIVOT/UNPIVOT`, `APPLY` | `DATA` steps, `PROC SORT NODUPKEY`, `PROC MEANS/SUMMARY`, `PROC FORMAT` | AST extracts skeleton + Meta model wraps modular PySpark DataFrames | **~$0.015** | Parallel-run diff |
-| **Tier C (Hard)** | Procedural scripts (`DECLARE @var`, `WHILE`, `CURSOR`, `MERGE`, dynamic SQL) | Stateful syntax (`RETAIN`, `FIRST.`, `LAST.`, `%MACRO` loops, `MERGE IN=`) | Multi-step Meta Agent: Plan $\to$ Generate PySpark $\to$ Run $\to$ Self-Heal | **~$0.045** | Self-healing parity |
+| **Tier B (Medium)** | CTEs (`WITH ... AS`), Windowing (`OVER(...)`), `PIVOT/UNPIVOT`, `APPLY` | `DATA` steps, `PROC SORT NODUPKEY`, `PROC MEANS/SUMMARY`, `PROC FORMAT` | AST extracts skeleton + Meta LLM / Claude skill wraps DataFrames | **~$0.015** | Parallel-run diff |
+| **Tier C (Hard)** | Procedural scripts (`DECLARE @var`, `WHILE`, `CURSOR`, `MERGE`, dynamic SQL) | Stateful syntax (`RETAIN`, `FIRST.`, `LAST.`, `%MACRO` loops, `MERGE IN=`) | Multi-step Meta LLM / Claude Skill Agent: Plan $\to$ PySpark $\to$ Self-Heal | **~$0.045** | Self-healing parity |
 
 ---
 
@@ -72,9 +73,9 @@ The repository includes 12 canonical legacy benchmark jobs (8 T-SQL, 4 SAS) in [
 
 ---
 
-## Autonomous Repair Loop: Aegis Meta-Spark Repair Agent (`dpm/agents.py`)
+## Autonomous Repair Loop: EXLake.ai Meta LLM / Claude Skill (`dpm/agents.py`, `skills/modernize/SKILL.md`)
 
-When the deterministic AST transpiler or reconciliation sandbox detects an execution error or data mismatch, the orchestrator triggers the **Aegis Meta-Spark Repair Agent**. 
+When the deterministic AST transpiler or reconciliation sandbox detects an execution error or data mismatch, the orchestrator triggers the **EXLake.ai Meta LLM / Claude Repair Agent**. Operated programmatically via Python or through the Claude Code `/modernize` slash skill (`skills/modernize/SKILL.md`), the agent executes autonomous self-healing. 
 
 The agent operates under a strict surgical protocol to fix semantic drops rather than rewriting architecture from scratch.
 
@@ -109,7 +110,7 @@ Configured to seamlessly access Meta and cloud inference endpoints via standard 
 
 ## Ground-Truth Oracle Engine & Exact Reconciliation (`dpm/reconcile.py`)
 
-Code equivalence is **never** validated by inspecting text or using sloppy `np.isclose`. Aegis enforces exact mathematical verification:
+Code equivalence is **never** validated by inspecting text or using sloppy `np.isclose`. EXLake.ai enforces exact mathematical verification:
 
 1. **Declared Oracle Engine**:
    - **T-SQL**: SQL Server 2022 container (`mcr.microsoft.com/mssql/server`, `oracle_kind: sqlserver`).
@@ -196,9 +197,9 @@ Navigate to: `http://localhost:8000/#/modernize`
 
 ---
 
-## Bonus Deliverable: Aegis COBOL → Go Verification Engine
+## Bonus Deliverable: EXLake.ai COBOL → Go Verification Engine
 
-In addition to Challenge 03, this repository retains the **Aegis Migrate COBOL Engine** as a bonus capability:
+In addition to Challenge 03, this repository retains the **EXLake.ai COBOL Engine** as a bonus capability:
 - Compiler oracle execution via GnuCOBOL.
 - Isolated Docker sandbox (`core/sandbox.py`) for safe model code execution.
 - Automated repair loops diffing stdout byte-for-byte on synthetic fixed-width inputs.

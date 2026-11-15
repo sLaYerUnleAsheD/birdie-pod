@@ -1,11 +1,11 @@
-import { state, subscribe, boot, parseHash, setPage, ensureRun, openProgramPath, closeCompare } from "./store.js?v=meta_3pane_v15";
+import { state, subscribe, boot, parseHash, setPage, ensureRun, openProgramPath, closeCompare } from "./store.js?v=exlake_v2";
 import { clear } from "./views/dom.js";
 import { renderExplorer } from "./views/explorer.js";
 import { renderResults } from "./views/results.js";
 import { renderFailures } from "./views/failures.js";
 import { renderVerifier } from "./views/verifier.js";
 import { renderAbout } from "./views/about.js";
-import { renderModernize } from "./views/modernize.js?v=meta_3pane_v15";
+import { renderModernize } from "./views/modernize.js?v=exlake_v2";
 
 const main = document.getElementById("main");
 
@@ -19,13 +19,13 @@ function syncNav() {
   const badgeText = document.querySelector(".provenance-badge span:last-child");
 
   if (state.route.page === "modernize") {
-    if (lead) lead.textContent = "Challenge 03: Agentic Data Platform Modernisation";
+    if (lead) lead.textContent = "EXLake.ai: Agentic Data Platform Modernisation";
     if (desc) desc.textContent = "3-Tier deterministic routing (sqlglot AST + Meta LLM), Medallion Delta Lake contracts, and mathematical 4-point output reconciliation.";
     if (badgeText) badgeText.textContent = "100% Record-for-Record Parity";
   } else {
-    if (lead) lead.textContent = "Agents can write the Go. Nobody can trust it without evidence.";
-    if (desc) desc.textContent = "Aegis Migrate runs the GnuCOBOL oracle, diffs every byte, and executes autonomous repair loops until equivalence is proven.";
-    if (badgeText) badgeText.textContent = "Replayed from data: no API call";
+    if (lead) lead.textContent = "Agents can write the code. Nobody can trust it without evidence.";
+    if (desc) desc.textContent = "EXLake.ai runs compiler oracles, diffs every record, and executes autonomous repair loops until 100% equivalence is proven.";
+    if (badgeText) badgeText.textContent = "Deterministic Parity Gate";
   }
 }
 

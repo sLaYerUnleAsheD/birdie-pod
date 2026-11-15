@@ -76,7 +76,7 @@ def generate_openlineage_event(job: dict[str, Any]) -> dict[str, Any]:
         },
         "inputs": inputs,
         "outputs": outputs,
-        "producer": "https://github.com/sLaYerUnleAsheD/aegis-migrate",
+        "producer": "https://github.com/sLaYerUnleAsheD/birdie-pod",
     }
 
 
