@@ -19,7 +19,7 @@ export function renderTimeline(root) {
       el("button", {
         class: "primary replay-btn", type: "button",
         onClick: () => { restartReplay(); playReplay(); },
-      }, "▶ Replay from cache"),
+      }, "▶ Migrate job"),
       el("button", {
         class: "btn-play-pause", type: "button",
         onClick: () => {

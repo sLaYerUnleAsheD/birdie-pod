@@ -14,6 +14,7 @@
   --blue-hover:    #166FE5;
   --blue-active:   #1464D8;
   --blue-muted:    #E7F3FF;
+  --accent:        #1877F2;
 
   /* Neutral ramp (Meta UI grays) */
   --white:         #FFFFFF;
@@ -547,12 +548,12 @@ tr:hover td { background: var(--panel-hover); }
 
 /* ── Results & Failures bar charts ─────────────────────── */
 .heat { min-width: 6rem; text-align: center; border-radius: var(--r-xs); font-size: .8rem; }
-.bars { display: grid; gap: .45rem; max-width: 44rem; }
-.hbar { display: grid; grid-template-columns: 13rem 1fr 4rem; gap: .75rem; align-items: center; }
+.bars { display: grid; gap: .65rem; max-width: 56rem; width: 100%; }
+.hbar { display: grid; grid-template-columns: minmax(320px, max-content) 1fr 6rem; gap: 1.25rem; align-items: center; }
 .hbar button { text-align: left; background: none; border: 0; color: inherit; padding: .15rem 0; font-size: .85rem; }
 .hbar button:hover { color: var(--blue-primary); }
-.track { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.track > i { display: block; height: 100%; background: var(--blue-primary); border-radius: 4px; }
+.track { height: 10px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+.track > i { display: block; height: 100%; background: var(--blue-primary); border-radius: 4px; transition: width 0.3s ease; }
 
 /* ── About page ─────────────────────────────────────────── */
 .about-hero { margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; }
