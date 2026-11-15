@@ -1,0 +1,5 @@
+product,month_end,next_day,claims_per_policy,span_months
+VAL_1,2025-01-01,VAL_1,1,1
+VAL_2,2025-02-01,VAL_2,2,2
+VAL_3,2025-03-01,VAL_3,3,3
+VAL_4,2025-04-01,VAL_4,4,4

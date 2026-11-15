@@ -1,7 +1,7 @@
 id: tsql_07
 dialect: tsql
 oracle_kind: sqlserver
-description: Reserve waterfall. Trap: WHILE loop over a #temp table (procedural).
+description: "Reserve waterfall. Trap: WHILE loop over a #temp table (procedural)."
 inputs:
   claim:
     claim_id: string

@@ -14,6 +14,7 @@ from typing import Any
 
 from dpm.jobload import load_job, list_jobs
 from dpm.pipeline import migrate_job, MigrationResult
+from core.llm import load_env
 
 
 def run_benchmark(
@@ -22,6 +23,7 @@ def run_benchmark(
     cost_cap: float = 5.0,
 ) -> dict[str, Any]:
     """Runs all benchmark jobs and generates an aggregated scorecard."""
+    load_env()
     job_ids = list_jobs(jobs_dir)
     results: list[MigrationResult] = []
     total_cost = 0.0
@@ -50,7 +52,11 @@ def run_benchmark(
         results.append(res)
         total_cost += res.total_cost_usd
 
-        print(f"  [{res.status.upper()}] {jid:10} | {res.tier[:15]} | Route: {res.route_path:10} | Cost: ${res.total_cost_usd:.4f}")
+        status_tag = f"[{res.status.upper()}]"
+        print(f"  {status_tag:10} {jid:10} | {res.tier[:15]} | Route: {res.route_path:10} | Cost: ${res.total_cost_usd:.4f}")
+        if res.status != "verified" and res.attempts and res.attempts[-1].failure:
+            err_snip = res.attempts[-1].failure.splitlines()[0][:68]
+            print(f"             ↳ {err_snip}")
 
     verified = sum(1 for r in results if r.status == "verified")
     zero_cost_count = sum(1 for r in results if r.total_cost_usd == 0.0)

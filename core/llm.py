@@ -66,7 +66,8 @@ class Provider:
 PROVIDERS = {
     # Prices from the Meta Model API pricing page (Standard mode).
     "meta": Provider("meta", "responses", "META_API_URL", "META_API_KEY",
-                     "muse-spark-1.3", 1.25, 0.15, 4.25, "low", 40.0),
+                     "muse-spark-1.3", 1.25, 0.15, 4.25, "low", 40.0,
+                     "https://api.meta.ai/v1/responses"),
     # Modal Shared Endpoint. Per Modal's docs: OpenAI Chat Completions (and
     # Responses) at inference.us-west.modal.direct, authenticated with a proxy
     # token "wk-...<id>.ws-...<secret>" as a Bearer key. The model id is the

@@ -1,7 +1,7 @@
 id: sas_01
 dialect: sas
 oracle_kind: sas-snapshot
-description: Paid by LOB. Trap: SAS functions in SQL.
+description: "Paid by LOB. Trap: SAS functions in SQL."
 inputs:
   claims_base:
     claim_id: string

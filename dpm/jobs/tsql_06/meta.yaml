@@ -1,7 +1,7 @@
 id: tsql_06
 dialect: tsql
 oracle_kind: sqlserver
-description: Monthly loss ratio. Trap: int/int division, EOMONTH and DATEDIFF month boundaries.
+description: "Monthly loss ratio. Trap: int/int division, EOMONTH and DATEDIFF month boundaries."
 inputs:
   policy:
     product: string

@@ -48,6 +48,26 @@
       "timeout_seconds": 1800
     },
     {
+      "task_id": "task_sas_05",
+      "job_id": "sas_05",
+      "dialect": "sas",
+      "tier": "C",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_sas_06",
+      "job_id": "sas_06",
+      "dialect": "sas",
+      "tier": "C",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
       "task_id": "task_tsql_01",
       "job_id": "tsql_01",
       "dialect": "tsql",
@@ -120,6 +140,36 @@
     {
       "task_id": "task_tsql_08",
       "job_id": "tsql_08",
+      "dialect": "tsql",
+      "tier": "C",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_09",
+      "job_id": "tsql_09",
+      "dialect": "tsql",
+      "tier": "C",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_10",
+      "job_id": "tsql_10",
+      "dialect": "tsql",
+      "tier": "B",
+      "depends_on": [],
+      "sla_minutes": 30,
+      "retries": 2,
+      "timeout_seconds": 1800
+    },
+    {
+      "task_id": "task_tsql_11",
+      "job_id": "tsql_11",
       "dialect": "tsql",
       "tier": "C",
       "depends_on": [],

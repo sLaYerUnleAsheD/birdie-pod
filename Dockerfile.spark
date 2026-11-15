@@ -2,15 +2,15 @@
 # Challenge 03: Agentic Data Platform Modernisation
 # Used by: dpm/benchmark.py, scripts/test_repair_agent.py (Spark validation mode)
 
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
 
-# Java is required by PySpark
+# Java is required by PySpark (default-jre-headless works across Bookworm & Trixie, amd64 & arm64)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        openjdk-17-jre-headless \
+        default-jre-headless \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
+ENV JAVA_HOME=/usr/lib/jvm/default-java \
     PYSPARK_PYTHON=python3 \
     PYSPARK_DRIVER_PYTHON=python3
 
@@ -24,10 +24,14 @@ RUN pip install --no-cache-dir \
 
 WORKDIR /app
 
-# Copy the DPM migration engine and benchmark data
+# Copy the complete Aegis modernization stack
 COPY dpm/ /app/dpm/
 COPY core/ /app/core/
-COPY benchmark/data/ /app/data/
+COPY lakehouse_adapter/ /app/lakehouse_adapter/
+COPY benchmark/ /app/benchmark/
+COPY viewer/ /app/viewer/
+COPY scripts/ /app/scripts/
+COPY serve.py /app/
 COPY requirements.txt /app/
 
 # Default: run the full benchmark pipeline with a $2.00 spend cap

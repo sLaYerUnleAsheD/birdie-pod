@@ -1,7 +1,7 @@
 id: tsql_02
 dialect: tsql
 oracle_kind: sqlserver
-description: Claims by region and status. Trap: CI collation groups 'open' with 'OPEN'.
+description: "Claims by region and status. Trap: CI collation groups 'open' with 'OPEN'."
 inputs:
   claim:
     region: string
