@@ -48,9 +48,9 @@ export function renderResults(root) {
   // Breakdown bars with stacked vertical label/bar to prevent ANY overlapping
   const llmBars = el("div", { style: "display:flex;flex-direction:column;gap:.75rem;padding-top:.5rem;border-top:1px solid var(--border);" });
   llmBars.append(
-    renderBar("Tier A: Deterministic sqlglot AST ($0.000)", 53, "9 jobs", "var(--ok)"),
-    renderBar("Tier B: Hybrid AST + Meta LLM / Claude Skill ($0.015)", 24, "4 jobs", "var(--accent)"),
-    renderBar("Tier C: Autonomous Agent Repair (Meta LLM / Claude Skill · $0.045)", 23, "4 jobs", "var(--warn)"),
+    renderBar("Tier A: Deterministic sqlglot AST ($0.000)", 53, "9 jobs", "var(--ok, #31A24C)"),
+    renderBar("Tier B: Hybrid AST + Meta LLM / Claude Skill ($0.015)", 24, "4 jobs", "var(--blue-primary, #1877F2)"),
+    renderBar("Tier C: Autonomous Agent Repair (Meta LLM / Claude Skill · $0.045)", 23, "4 jobs", "var(--warn, #F5A623)"),
   );
   llmModule.append(llmBars);
   page.append(llmModule);
