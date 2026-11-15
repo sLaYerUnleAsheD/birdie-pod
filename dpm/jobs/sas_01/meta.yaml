@@ -1,0 +1,16 @@
+id: sas_01
+dialect: sas
+oracle_kind: sas-snapshot
+description: Paid by LOB. Trap: SAS functions in SQL.
+inputs:
+  claims_base:
+    claim_id: string
+    lob: string
+    paid: decimal(12,2)
+outputs:
+  paid_by_lob:
+    key: [lob]
+    cols:
+      lob: string
+      total_paid: decimal(18,2)
+

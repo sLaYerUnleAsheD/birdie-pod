@@ -1,0 +1,34 @@
+id: sas_06
+dialect: sas
+oracle_kind: sas-snapshot
+description: >
+  Fraud scoring with SAS HASH object deduplication, ARRAY coefficient scoring,
+  RETAIN BY-group state, _TEMPORARY_ private arrays, and DO-loop with LEAVE.
+  Traps: HASH object (must become dropDuplicates or Window ROW_NUMBER),
+  ARRAY with _TEMPORARY_ (map to Python list constants in PySpark UDF or literal()),
+  DO-loop vector dot-product (map to column arithmetic expression),
+  IFINF function (no Spark native, must use F.when(F.isinf())),
+  DATA step VIEW (lazy evaluation, must materialise).
+inputs:
+  raw_claims:
+    claim_id: string
+    policy_id: string
+    claim_date: date
+    claim_amount_norm: float
+    late_report_flag: int
+    multi_policy_flag: int
+    prior_claims_count: int
+    duplicate_address_flag: int
+outputs:
+  scored_sorted:
+    key: [claim_id]
+    cols:
+      claim_id: string
+      policy_id: string
+      claim_date: date
+      fraud_score: float
+      risk_band: int
+edge_hints:
+  raw_claims.claim_amount_norm: ["null", "0.0", "0.35", "1.0"]
+  raw_claims.late_report_flag: ["0", "1", "null"]
+

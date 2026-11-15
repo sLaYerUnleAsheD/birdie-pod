@@ -1,0 +1,35 @@
+id: tsql_10
+dialect: tsql
+oracle_kind: sqlserver
+description: >
+  Actuarial loss triangle with CROSS APPLY, nested CTE, NULLIF-guarded division,
+  DATEDIFF month boundary, CASE-bucket aggregation, and integer-truncated loss ratio.
+  Traps: CROSS APPLY fan-out, NULLIF(x, 0) division guard, CASE-WHEN inside GROUP BY,
+  integer division truncation (CAST AS INT), DATEDIFF(month) boundary off-by-one.
+inputs:
+  claim:
+    claim_id: string
+    policy_id: string
+    loss_date: date
+    settlement_date: date
+    paid_loss: decimal(14,2)
+    case_reserve: decimal(14,2)
+    status: string
+  policy:
+    policy_id: string
+    effective_date: date
+    earned_premium: decimal(14,2)
+outputs:
+  loss_triangle:
+    key: [origin_year, dev_bucket]
+    cols:
+      origin_year: int
+      dev_bucket: string
+      incurred_total: decimal(18,2)
+      earned_premium: decimal(18,2)
+      loss_ratio_pct: int
+edge_hints:
+  claim.paid_loss: ["null", "0.00", "12500.00", "250000.00"]
+  claim.case_reserve: ["null", "0.00", "5000.00", "180000.00"]
+  claim.status: ["OPEN", "CLOSED", "DENIED"]
+

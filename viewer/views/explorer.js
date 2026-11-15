@@ -6,10 +6,10 @@ import { renderCompare } from "./compare.js";
 import { state } from "../store.js";
 
 export function renderExplorer(root) {
-  let shell = root.querySelector(".explorer");
+  let shell = root.querySelector(".explorer-cobol");
   if (!shell) {
     clear(root);
-    shell = el("div", { class: "explorer" });
+    shell = el("div", { class: "explorer explorer-cobol" });
     const left = el("section", { class: "pane pane-tree", "aria-label": "Directory tree" });
     const mid = el("section", { class: "pane pane-work", "aria-label": "Workbench" });
     const right = el("section", { class: "pane pane-time", "aria-label": "Pipeline timeline" });

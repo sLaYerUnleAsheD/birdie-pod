@@ -1,0 +1,39 @@
+
+
+SELECT 
+    c.ClaimID,
+    c.PolicyNumber,
+    c.ClaimDate,
+    c.ClaimAmount,
+    p.PolicyType,
+    p.CustomerRegion
+INTO #StagingClaims
+FROM RawClaimsDB.dbo.Claims c
+INNER JOIN PolicyDB.dbo.Policies p 
+    ON c.PolicyNumber = p.PolicyNumber
+WHERE c.ClaimStatus = 'Approved' 
+  AND YEAR(c.ClaimDate) = 2025;
+
+CREATE TABLE ReportingDB.dbo.MonthlyClaimsSummary (
+    ReportMonth VARCHAR(7),
+    PolicyType VARCHAR(50),
+    CustomerRegion VARCHAR(50),
+    TotalClaims INT,
+    TotalPayout DECIMAL(18,2)
+);
+
+INSERT INTO ReportingDB.dbo.MonthlyClaimsSummary 
+    (ReportMonth, PolicyType, CustomerRegion, TotalClaims, TotalPayout)
+SELECT 
+    FORMAT(ClaimDate, 'yyyy-MM') AS ReportMonth,
+    PolicyType,
+    CustomerRegion,
+    COUNT(ClaimID) AS TotalClaims,
+    SUM(ClaimAmount) AS TotalPayout
+FROM #StagingClaims
+GROUP BY 
+    FORMAT(ClaimDate, 'yyyy-MM'),
+    PolicyType,
+    CustomerRegion;
+
+DROP TABLE #StagingClaims;

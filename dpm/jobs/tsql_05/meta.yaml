@@ -1,0 +1,20 @@
+id: tsql_05
+dialect: tsql
+oracle_kind: sqlserver
+description: Latest claim per policy. Trap: ROW_NUMBER tie-break on claim_id when loss dates match.
+inputs:
+  claim:
+    claim_id: string
+    policy_id: string
+    loss_date: date
+    reserve: decimal(12,2)
+outputs:
+  latest_claim:
+    key: [policy_id]
+    cols:
+      claim_id: string
+      policy_id: string
+      loss_date: date
+      reserve: decimal(12,2)
+edge_hints:
+  claim.loss_date: ["2024-06-01", "2024-06-01"]

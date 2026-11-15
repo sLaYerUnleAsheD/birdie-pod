@@ -1,16 +1,18 @@
+import { DEFAULT_INDEX } from "./data/index_data.js";
+
 const TREE_KEY = "aegis-tree";
 const DATA = new URL("data/", import.meta.url);
 
 const listeners = new Set();
 
 export const state = {
-  index: null,
+  index: DEFAULT_INDEX || null,
   indexError: "",
   programs: new Map(),
   runs: new Map(),
   loading: { run: false, program: false, index: true },
   errors: { run: "", program: "" },
-  route: { page: "explorer", runId: "", pane: "cobol", failGroup: "" },
+  route: { page: "modernize", runId: "", pane: "cobol", failGroup: "" },
   filters: { provider: new Set(), effort: new Set(), status: new Set(), q: "" },
   treeOpen: loadTree(),
   goAttempt: null,
@@ -39,9 +41,9 @@ export function pctCount(num, den) {
 }
 
 export function parseHash() {
-  const h = (location.hash || "#/explorer").replace(/^#/, "");
+  const h = (location.hash || "#/modernize").replace(/^#/, "");
   const parts = h.split("/").filter(Boolean);
-  const page = parts[0] || "explorer";
+  const page = parts[0] || "modernize";
   const route = { page, runId: "", pane: "cobol", failGroup: "" };
   if (page === "explorer") {
     route.runId = decodeURIComponent(parts[1] || "");
@@ -77,7 +79,10 @@ export async function loadIndex() {
     state.index = await fetchJson("index.json");
   } catch (e) {
     state.indexError = String(e.message || e);
-    state.index = { programs: [], runs: [], summary: [], overall: [], matrix: [], mutation: [], failure_counts: {} };
+    state.index = DEFAULT_INDEX || { programs: [], runs: [], summary: [], overall: [], matrix: [], mutation: [], failure_counts: {} };
+  }
+  if (!state.index?.runs?.length && DEFAULT_INDEX?.runs?.length) {
+    state.index = DEFAULT_INDEX;
   }
   state.loading.index = false;
   emit();
@@ -140,9 +145,19 @@ export function setPane(pane) {
 
 export function setPage(page, extra) {
   stopReplay(true);
-  state.route = { page, runId: extra?.runId || state.route.runId, pane: extra?.pane || "cobol", failGroup: extra?.failGroup || "" };
+  let runId = extra?.runId || state.route.runId;
+  if (page === "explorer" && !runId && state.index?.runs?.length) {
+    runId = state.index.runs[0].id;
+  }
+  state.route = { page, runId, pane: extra?.pane || "cobol", failGroup: extra?.failGroup || "" };
   setHash(state.route);
-  emit();
+  if (page === "explorer" && runId && !state.runs.has(runId)) {
+    const meta = (state.index?.runs || []).find((r) => r.id === runId);
+    openProgramPath(meta);
+    ensureRun(runId);
+  } else {
+    emit();
+  }
 }
 
 export function toggleFilter(kind, value) {
@@ -399,8 +414,13 @@ export function providerName(p) {
 
 export async function boot() {
   state.route = parseHash();
+  setHash(state.route);
   await loadIndex();
   state.route = parseHash();
+  if (state.route.page === "explorer" && !state.route.runId && state.index?.runs?.length) {
+    state.route.runId = state.index.runs[0].id;
+    setHash(state.route);
+  }
   if (state.route.page === "explorer" && state.route.runId) {
     const meta = (state.index.runs || []).find((r) => r.id === state.route.runId);
     openProgramPath(meta);

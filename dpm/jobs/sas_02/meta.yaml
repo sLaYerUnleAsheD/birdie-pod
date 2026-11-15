@@ -1,0 +1,18 @@
+id: sas_02
+dialect: sas
+oracle_kind: sas-snapshot
+description: DATA step clean + SORT NODUPKEY + MEANS. Trap: missing values, NODUPKEY keeps first.
+inputs:
+  claims_raw:
+    claim_id: string
+    policy_id: string
+    region: string
+    amount: decimal(12,2)
+outputs:
+  claims_summary:
+    key: [region]
+    cols:
+      region: string
+      avg_amount: decimal(12,2)
+      total_amount: decimal(18,2)
+

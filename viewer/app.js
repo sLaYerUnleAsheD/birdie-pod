@@ -1,10 +1,11 @@
-import { state, subscribe, boot, parseHash, setPage, ensureRun, openProgramPath, closeCompare } from "./store.js";
+import { state, subscribe, boot, parseHash, setPage, ensureRun, openProgramPath, closeCompare } from "./store.js?v=meta_3pane_v15";
 import { clear } from "./views/dom.js";
 import { renderExplorer } from "./views/explorer.js";
 import { renderResults } from "./views/results.js";
 import { renderFailures } from "./views/failures.js";
 import { renderVerifier } from "./views/verifier.js";
 import { renderAbout } from "./views/about.js";
+import { renderModernize } from "./views/modernize.js?v=meta_3pane_v15";
 
 const main = document.getElementById("main");
 
@@ -12,15 +13,31 @@ function syncNav() {
   document.querySelectorAll("[data-nav]").forEach((a) => {
     a.setAttribute("aria-current", a.dataset.nav === state.route.page ? "page" : "false");
   });
+
+  const lead = document.querySelector(".provenance-lead");
+  const desc = document.querySelector(".provenance-desc");
+  const badgeText = document.querySelector(".provenance-badge span:last-child");
+
+  if (state.route.page === "modernize") {
+    if (lead) lead.textContent = "Challenge 03: Agentic Data Platform Modernisation";
+    if (desc) desc.textContent = "3-Tier deterministic routing (sqlglot AST + Meta LLM), Medallion Delta Lake contracts, and mathematical 4-point output reconciliation.";
+    if (badgeText) badgeText.textContent = "100% Record-for-Record Parity";
+  } else {
+    if (lead) lead.textContent = "Agents can write the Go. Nobody can trust it without evidence.";
+    if (desc) desc.textContent = "Aegis Migrate runs the GnuCOBOL oracle, diffs every byte, and executes autonomous repair loops until equivalence is proven.";
+    if (badgeText) badgeText.textContent = "Replayed from data: no API call";
+  }
 }
 
 function render() {
   syncNav();
   const page = state.route.page;
-  if (page === "results") { clear(main); renderResults(main); }
-  else if (page === "failures") { clear(main); renderFailures(main); }
-  else if (page === "verifier") { clear(main); renderVerifier(main); }
-  else if (page === "about") { clear(main); renderAbout(main); }
+  clear(main);
+  if (page === "modernize") { renderModernize(main); }
+  else if (page === "results") { renderResults(main); }
+  else if (page === "failures") { renderFailures(main); }
+  else if (page === "verifier") { renderVerifier(main); }
+  else if (page === "about") { renderAbout(main); }
   else { renderExplorer(main); }
 }
 

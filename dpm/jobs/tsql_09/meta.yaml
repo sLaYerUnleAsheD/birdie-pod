@@ -1,0 +1,25 @@
+id: tsql_09
+dialect: tsql
+oracle_kind: sqlserver
+description: >
+  Dynamic reinsurance allocation with 3-layer WHILE loop, temp-table accumulation,
+  and window function on the final aggregated result.
+  Traps: DECLARE @var, WHILE loop, #temp table, ISNULL inside loop,
+  CASE-WHEN inside INSERT..SELECT, and final OVER() partition.
+inputs:
+  claim:
+    claim_id: string
+    gross_incurred: decimal(14,2)
+    loss_date: date
+    status: string
+outputs:
+  reinsurance_allocation:
+    key: [claim_id]
+    cols:
+      claim_id: string
+      total_ceded: decimal(14,2)
+      final_net: decimal(14,2)
+edge_hints:
+  claim.gross_incurred: ["0.00", "250000.00", "750000.00", "1500000.00", "null"]
+  claim.status: ["OPEN", "CLOSED", "DENIED"]
+

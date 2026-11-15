@@ -1,0 +1,35 @@
+id: tsql_11
+dialect: tsql
+oracle_kind: sqlserver
+description: >
+  Multi-currency FX revaluation using dynamic SQL (sp_executesql),
+  TRY/CATCH error block, N-ary COALESCE chain on FX rate fallback,
+  and CONVERT date with SQL Server style 103.
+  Traps: sp_executesql (Tier C mandatory), TRY/CATCH (no PySpark equivalent),
+  COALESCE with 3 fallback tiers, CONVERT style 103 date formatting,
+  GETDATE() inside dynamic SQL requires snapshot timestamp injection.
+inputs:
+  policy:
+    policy_id: string
+    currency: string
+    gross_written_premium: decimal(18,2)
+    effective_date: date
+    status: string
+  fx_rates:
+    currency_code: string
+    rate_date: date
+    gbp_rate: decimal(10,6)
+outputs:
+  fx_revaluation:
+    key: [policy_id]
+    cols:
+      policy_id: string
+      currency: string
+      gwp_original: decimal(18,2)
+      fx_rate: decimal(10,6)
+      gwp_gbp: decimal(18,2)
+      revaluation_date: string
+edge_hints:
+  fx_rates.gbp_rate: ["null", "1.0", "1.2650", "0.8812", "1.3301"]
+  policy.status: ["ACTIVE", "LAPSED", "CANCELLED"]
+
