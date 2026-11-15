@@ -72,6 +72,41 @@ The repository includes 12 canonical legacy benchmark jobs (8 T-SQL, 4 SAS) in [
 
 ---
 
+## Autonomous Repair Loop: Aegis Meta-Spark Repair Agent (`dpm/agents.py`)
+
+When the deterministic AST transpiler or reconciliation sandbox detects an execution error or data mismatch, the orchestrator triggers the **Aegis Meta-Spark Repair Agent**. 
+
+The agent operates under a strict surgical protocol to fix semantic drops rather than rewriting architecture from scratch.
+
+### Input Schema (3-Artifact Bundle)
+For every repair attempt, the orchestrator packages three exact artifacts:
+1. **Source Legacy Code**: The original T-SQL or SAS script.
+2. **Failed PySpark Attempt**: The latest candidate script from the transpiler or previous attempt.
+3. **Sandbox Error Report**: Either a Python compilation stack trace OR the mathematical reconciliation diff report showing exactly where row counts, schemas, or values mismatched.
+
+### Phase 5 Semantic Guardrails
+- **Filter Preservation**: Every legacy `WHERE` and `HAVING` clause is strictly mapped to `.filter()` on the DataFrame.
+- **Join Fidelity**: Join types are strictly conserved. If legacy specifies `LEFT JOIN`, PySpark must enforce `how="left"` (never defaulting to inner joins).
+- **Complex Math Translation**: Before applying mathematical operators (`+`, `-`, `*`, `/`) between columns, every individual column is wrapped in `coalesce` to eliminate null propagation:
+  - *Legacy*: `ISNULL(A, 0) + ISNULL(B, 0)`
+  - *Correct PySpark*: `F.coalesce(F.col("A"), F.lit(0)) + F.coalesce(F.col("B"), F.lit(0))`
+  - *Fatal Error*: `F.coalesce(F.col("A") + F.col("B"), F.lit(0))` (nulls out the entire sum if either operand is null).
+
+### Phase 4 Enterprise Syntactic Standards
+- **Medallion Layer Separation**: Preserves distinct stages for Bronze (Ingestion), Silver (Conformed Joins & Filters), and Gold (Aggregations & Projections).
+- **Explicit Aliasing**: All DataFrames are immediately aliased (e.g. `.alias("c")`).
+- **Explicit Join Equality**: Join conditions use strict column references (e.g., `F.col("c.ID") == F.col("p.ID")`).
+- **Aggregation Structure**: Dimension columns and aggregate metrics are never mixed in `.select()`. All aggregations strictly use `.groupBy(...).agg(...)`.
+
+### LLM Provider Configuration (`core/llm.py`)
+Configured to seamlessly access Meta and cloud inference endpoints via standard environment keys:
+- `META_API_URL` & `META_API_KEY`: Direct Meta model endpoint access (`muse-spark-1.3`).
+- `MODAL_API_URL`, `MODAL_API_KEY`, & `MODAL_MODEL`: Modal shared endpoints.
+- `BASETEN_API_KEY` & `BASETEN_MODEL`: Baseten Model APIs.
+- Built-in disk cache, per-provider spend caps (`MAX_SPEND_META_USD`), and JSONL audit ledger.
+
+---
+
 ## Ground-Truth Oracle Engine & Exact Reconciliation (`dpm/reconcile.py`)
 
 Code equivalence is **never** validated by inspecting text or using sloppy `np.isclose`. Aegis enforces exact mathematical verification:

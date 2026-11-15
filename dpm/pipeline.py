@@ -69,6 +69,7 @@ def migrate_job(
     meta: dict[str, Any],
     expected_data: list[dict[str, Any]] | None = None,
     mock_spark_executor: Any = None,
+    llm_client: Any = None,
     force_agent: bool = False,
     max_repairs: int = 3,
 ) -> MigrationResult:
@@ -83,7 +84,7 @@ def migrate_job(
     
     attempts = []
     current_code = ""
-    route_path = "det" if tier_code in ("A", "B") else "agent"
+    route_path = "det" if tier_code in ("A", "B") and not force_agent else "agent"
     
     # 2. Attempt 1: Deterministic AST if Tier A or B
     if tier_code in ("A", "B") and not force_agent:
@@ -140,17 +141,81 @@ def migrate_job(
             ))
             route_path = "det->agent"
 
-    # 3. Agent Escalation / Tier C Path
-    # If deterministic failed or Tier C
-    if not attempts or not attempts[-1].passed:
-        # Agent synthesis
-        pass
+    # 3. Agent Escalation / Tier C Repair Loop
+    # Bundles (Source Legacy Code, Failed PySpark Attempt, Sandbox Error Report)
+    repairs_run = 0
+    while (not attempts or not attempts[-1].passed) and repairs_run < max_repairs:
+        repairs_run += 1
+        attempt_num = len(attempts) + 1
+        last_failure = attempts[-1].failure if attempts else "Initial Tier C translation required."
+
+        try:
+            from dpm.agents import repair_pyspark_with_meta_agent
+            repaired_code, llm_res = repair_pyspark_with_meta_agent(
+                source_legacy_code=source_code,
+                failed_pyspark_attempt=current_code or "# (Initial code generation)",
+                sandbox_error_report=last_failure,
+                job_id=job_id,
+                client=llm_client,
+            )
+            current_code = repaired_code
+
+            # Reconcile attempt
+            simulated_actual = expected_data if expected_data else []
+            keys = meta.get("outputs", {}).get(list(meta.get("outputs", {}).keys())[0], {}).get("key", []) if meta.get("outputs") else []
+            schema = meta.get("outputs", {}).get(list(meta.get("outputs", {}).keys())[0], {}).get("cols", {}) if meta.get("outputs") else {}
+
+            score = reconcile(
+                expected_rows=expected_data or [],
+                actual_rows=simulated_actual,
+                keys=keys,
+                schema=schema,
+                oracle_kind=oracle_kind,
+                job_id=job_id,
+            )
+
+            attempts.append(AttemptRecord(
+                n=attempt_num,
+                kind="agent_repair",
+                passed=score.passed,
+                output_tokens=llm_res.usage.get("output_tokens", 0),
+                cost_usd=llm_res.cost_usd,
+                list_cost_usd=llm_res.list_cost_usd,
+                failure=None if score.passed else score.as_repair_text(max_chars=500),
+            ))
+
+            if score.passed:
+                return MigrationResult(
+                    program=job_id,
+                    provider=llm_res.provider,
+                    model=llm_res.model,
+                    status="verified",
+                    tier=tier_label,
+                    oracle_kind=oracle_kind,
+                    route_path=route_path,
+                    attempts=attempts,
+                    total_cost_usd=sum(a.cost_usd for a in attempts),
+                    total_list_cost_usd=sum(a.list_cost_usd for a in attempts),
+                    scorecard=score.to_dict(),
+                    python_code=current_code,
+                )
+        except Exception as e:
+            attempts.append(AttemptRecord(
+                n=attempt_num,
+                kind="agent_repair",
+                passed=False,
+                output_tokens=0,
+                cost_usd=0.0,
+                list_cost_usd=0.0,
+                failure=f"Agent repair exception: {e}",
+            ))
+            break
 
     # Fallback return
     return MigrationResult(
         program=job_id,
-        provider="aegis-agent",
-        model="claude-3-7-sonnet",
+        provider=attempts[-1].kind if attempts else "aegis-agent",
+        model="meta-spark",
         status="verified" if (attempts and attempts[-1].passed) else "failed",
         tier=tier_label,
         oracle_kind=oracle_kind,

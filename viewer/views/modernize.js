@@ -2,13 +2,39 @@ import { el, clear, empty } from "./dom.js";
 import { DEFAULT_LAKEHOUSE_JOBS } from "../data/lakehouse_jobs_data.js";
 
 /* ── Module-level state ─── */
+const STORAGE_KEY = "aegis_uploaded_pipelines_v2";
+
+function getStoredCustomJobs() {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) {
+        return arr.map(j => {
+          if (j.filename && j.title && j.title.includes("Job 07 Monthly Claims Summary") && j.filename.toLowerCase() !== "sample.tsql") {
+            j.title = j.filename;
+          }
+          return j;
+        });
+      }
+    }
+  } catch (_) {}
+  return [];
+}
+
+function saveStoredCustomJobs(jobs) {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
+  } catch (_) {}
+}
+
 let jobsData = [...(DEFAULT_LAKEHOUSE_JOBS || [])];
 let selectedJobId = "";
 let activeTab = "legacy"; // Legacy SQL first
 let searchQuery = "";
 let filterDialect = "ALL";
 let filterTier = "ALL";
-let customJobs = [];
+let customJobs = getStoredCustomJobs();
 
 /* Replay state matching COBOL timeline */
 let replay = {
@@ -114,6 +140,7 @@ function renderTree(root, allJobs, current, appRoot) {
     if (searchQuery) {
       const q = searchQuery.toLowerCase().trim();
       const inTitle   = (j.title || "").toLowerCase().includes(q);
+      const inName    = (j.filename || "").toLowerCase().includes(q);
       const inId      = (j.id || "").toLowerCase().includes(q);
       const inDialect = (j.dialect || "").toLowerCase().includes(q);
       const inTier    = (j.tier || "").toLowerCase().includes(q) || (j.tier_code || "").toLowerCase().includes(q);
@@ -122,7 +149,7 @@ function renderTree(root, allJobs, current, appRoot) {
       const inOut     = (j.layer_out || "").toLowerCase().includes(q);
       const inPK      = (j.primary_keys || []).join(" ").toLowerCase().includes(q);
       const inCols    = (j.lineage || []).map(l => l.target).join(" ").toLowerCase().includes(q);
-      if (!inTitle && !inId && !inDialect && !inTier && !inLegacy && !inSpark && !inOut && !inPK && !inCols) return false;
+      if (!inTitle && !inName && !inId && !inDialect && !inTier && !inLegacy && !inSpark && !inOut && !inPK && !inCols) return false;
     }
     if (filterDialect !== "ALL" && j.dialect !== filterDialect) return false;
     if (filterTier   !== "ALL" && j.tier_code !== filterTier)  return false;
@@ -139,12 +166,30 @@ function renderTree(root, allJobs, current, appRoot) {
   const customMatching = matching.filter(j => customJobs.some(cj => cj.id === j.id));
   if (customMatching.length) {
     const customDet = el("details", { open: true });
-    customDet.append(el("summary", { style: "cursor:pointer;font-weight:700;color:var(--brand,#0064e0);" },
-      el("span", {}, "📁 Uploaded Pipelines"),
-      el("span", { class: "mut" }, ` · ${customMatching.length}`),
-    ));
+    const sumHdr = el("summary", {
+      style: "cursor:pointer;font-weight:700;color:var(--brand,#0064e0);display:flex;align-items:center;justify-content:space-between;"
+    },
+      el("span", {}, "📁 Uploaded Pipelines", el("span", { class: "mut" }, ` · ${customMatching.length}`)),
+      el("button", {
+        type: "button",
+        class: "chip",
+        style: "font-size:.68rem;padding:1px 6px;margin-left:auto;margin-right:4px;cursor:pointer;",
+        title: "Clear all uploaded pipelines",
+        onclick: (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          customJobs = [];
+          saveStoredCustomJobs([]);
+          if (!jobsData.find(j => j.id === selectedJobId) && jobsData.length) {
+            selectedJobId = jobsData[0].id;
+          }
+          renderModernize(appRoot);
+        }
+      }, "Clear")
+    );
+    customDet.append(sumHdr);
     for (const job of customMatching) {
-      renderJobNode(customDet, job, current, appRoot);
+      renderJobNode(customDet, job, current, appRoot, true);
     }
     tree.append(customDet);
   }
@@ -167,7 +212,7 @@ function renderTree(root, allJobs, current, appRoot) {
     ));
 
     for (const job of tierJobs) {
-      renderJobNode(tierDet, job, current, appRoot);
+      renderJobNode(tierDet, job, current, appRoot, false);
     }
     tree.append(tierDet);
   }
@@ -183,7 +228,17 @@ function renderTree(root, allJobs, current, appRoot) {
           const isSas = f.name.endsWith(".sas");
           const newJob = makeCustomJob(f.name, ev.target.result, isSas);
           // Retain all uploaded files without duplicates by ID or filename
-          customJobs = [newJob, ...customJobs.filter(j => j.id !== newJob.id && j.title.toLowerCase() !== newJob.title.toLowerCase())];
+          const existingIdx = customJobs.findIndex(j =>
+            (j.filename || j.title || "").toLowerCase() === f.name.toLowerCase()
+          );
+          if (existingIdx >= 0) {
+            customJobs[existingIdx] = newJob;
+          } else {
+            customJobs = [newJob, ...customJobs.filter(j =>
+              j.id !== newJob.id && (j.filename || j.title || "").toLowerCase() !== f.name.toLowerCase()
+            )];
+          }
+          saveStoredCustomJobs(customJobs);
           selectedJobId = newJob.id;
           activeTab = "legacy";  // Show Legacy T-SQL first!
           searchQuery = "";
@@ -196,6 +251,7 @@ function renderTree(root, allJobs, current, appRoot) {
           renderModernize(appRoot);
         };
         reader.readAsText(f);
+        e.target.value = "";
       },
     });
     upWrap = el("div", { class: "upload-row", style: "flex-shrink:0;padding:.5rem .75rem;border-top:1px solid var(--border);background:var(--panel)" },
@@ -209,13 +265,29 @@ function renderTree(root, allJobs, current, appRoot) {
   }
 }
 
-function renderJobNode(parent, job, current, appRoot) {
+function renderJobNode(parent, job, current, appRoot, isCustom = false) {
   const ok = job.reconciliation?.overall_passed !== false;
   const bar = el("span", { class: "bar-mini", title: "1/1 verified" },
     el("i", { style: "width:100%" }));
 
   const progDet = el("details", { open: true });
   const isSel = job.id === (current?.id || "");
+
+  const removeBtn = isCustom ? el("button", {
+    type: "button",
+    class: "chip",
+    title: `Remove ${job.title || job.id}`,
+    style: "margin-left:auto;font-size:.65rem;padding:0 5px;background:none;border:none;color:var(--mut,#888);cursor:pointer;",
+    onclick: (e) => {
+      e.stopPropagation();
+      customJobs = customJobs.filter(j => j.id !== job.id);
+      saveStoredCustomJobs(customJobs);
+      if (selectedJobId === job.id) {
+        selectedJobId = customJobs[0]?.id || jobsData[0]?.id || "";
+      }
+      renderModernize(appRoot);
+    }
+  }, "✕") : null;
 
   const head = el("span", {
     style: "display:flex;align-items:center;gap:.4rem;width:100%;cursor:pointer;",
@@ -227,10 +299,14 @@ function renderJobNode(parent, job, current, appRoot) {
       renderModernize(appRoot);
     }
   },
-    el("span", { style: isSel ? "font-weight:700;color:var(--brand,#0064e0);" : "font-weight:500;" }, job.title || job.id),
+    el("span", {
+      style: isSel ? "font-weight:700;color:var(--brand,#0064e0);" : "font-weight:500;",
+      title: job.filename || job.title || job.id
+    }, job.title || job.id),
     bar,
     el("span", { class: `tag ${ok ? "ok" : "fail"}`, style: "font-size:.68rem;padding:0 4px;" },
       job.dialect?.toUpperCase()),
+    removeBtn,
   );
   progDet.append(el("summary", {
     onclick: () => {
@@ -769,7 +845,7 @@ function copyBlock(cmd) {
 
 function makeCustomJob(name, content, isSas) {
   const base = name.split(".")[0];
-  const isSampleTsql = (name.toLowerCase() === "sample.tsql" || name.toLowerCase().includes("sample")) &&
+  const isSampleTsql = (name.toLowerCase() === "sample.tsql") &&
                        (/MonthlyClaimsSummary/i.test(content) || /#StagingClaims/i.test(content));
 
   if (isSampleTsql) {
@@ -857,7 +933,8 @@ gold_df.write \\
 print(f"✓ Pipeline complete. Loaded {gold_df.count():,} records into gold.monthly_claims_summary_mart.")`;
 
     return {
-      id: "upload_" + name.replace(/[^a-zA-Z0-9_.]/g, "_"),
+      id: "custom_" + name.replace(/[^a-zA-Z0-9_.]/g, "_"),
+      filename: name,
       title: name,
       dialect: "tsql",
       tier_code: "A",
@@ -906,16 +983,18 @@ print(f"✓ Pipeline complete. Loaded {gold_df.count():,} records into gold.mont
   const pysparkCode = generateDynamicPySpark(name, parsed);
   const mockData = generateDynamicMockData(parsed.columns, parsed);
   const pkCol = parsed.primaryKeys?.length ? parsed.primaryKeys[0] : (parsed.columns[0]?.name || "id");
+  const targetMart = parsed.finalTargetTable ? `Gold Mart (${parsed.finalTargetTable})` : `Gold (${base.toLowerCase()}_mart)`;
 
   return {
-    id: "upload_" + name.replace(/[^a-zA-Z0-9_.]/g, "_"),
+    id: "custom_" + name.replace(/[^a-zA-Z0-9_.]/g, "_"),
+    filename: name,
     title: name,
     dialect: parsed.dialect,
     tier_code: parsed.tier_code,
     tier: parsed.tier,
     routing_reason: parsed.routing_reason,
     layer_in: "Bronze",
-    layer_out: `Gold (${base.toLowerCase()}_mart)`,
+    layer_out: targetMart,
     primary_keys: parsed.primaryKeys || [pkCol],
     legacy_code: content,
     pyspark_code: pysparkCode,
