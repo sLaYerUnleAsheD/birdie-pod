@@ -1,0 +1,29 @@
+id: sas_05
+dialect: sas
+oracle_kind: sas-snapshot
+description: >
+  Bordereaux premium reconciliation with %MACRO loop over underwriting years,
+  RETAIN cumulative accumulator, FIRST./LAST. BY-group sentinels,
+  conditional OUTPUT to multiple datasets, and PROC MEANS summary.
+  Traps: %MACRO/%DO (Tier C mandatory), RETAIN per BY-group reset, 
+  multi-dataset OUTPUT fan-out (must become filter + union), 
+  MONTH() date function, COALESCE inside DATA step,
+  PROC MEANS NWAY CLASS (must become groupBy().agg()).
+inputs:
+  bordereaux:
+    binder_id: string
+    underwriting_year: int
+    month_end_date: date
+    gross_written_premium: decimal(14,2)
+outputs:
+  bord_summary:
+    key: [binder_id, underwriting_year]
+    cols:
+      binder_id: string
+      underwriting_year: int
+      total_gwp: decimal(18,2)
+      peak_monthly_gwp: decimal(14,2)
+edge_hints:
+  bordereaux.gross_written_premium: ["null", "0.00", "12500.00", "450000.00", "2100000.00"]
+  bordereaux.underwriting_year: ["2022", "2023", "2024"]
+
