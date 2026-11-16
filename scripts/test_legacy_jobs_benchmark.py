@@ -101,10 +101,9 @@ def test_legacy_benchmark():
     print("  Challenge 03 Modernization Factory: FULLY OPERATIONAL.")
     print("=" * 80)
     assert passed_jobs == total_jobs, f"Only {passed_jobs}/{total_jobs} passed"
-    return True
 
 
 if __name__ == "__main__":
-    success = test_legacy_benchmark()
-    sys.exit(0 if success else 1)
+    test_legacy_benchmark()
+    sys.exit(0)
 

@@ -24,9 +24,7 @@ function idleReplay() {
   return { playing: false, i: -1, speed: 1, steps: [], typed: 0, passShown: 0, done: false };
 }
 
-function loadTree() {
-  try { return JSON.parse(localStorage.getItem(TREE_KEY) || "{}"); } catch { return {}; }
-}
+function loadTree() { return {}; }
 function saveTree() { try { localStorage.setItem(TREE_KEY, JSON.stringify(state.treeOpen)); } catch {} }
 export function subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); }
 export function emit() { listeners.forEach((fn) => fn(state)); }
@@ -85,7 +83,19 @@ export async function loadIndex() {
     state.index = DEFAULT_INDEX;
   }
   state.loading.index = false;
+  prefetchPrograms();
   emit();
+}
+
+export function prefetchPrograms() {
+  if (!state.index?.programs) return;
+  for (const p of state.index.programs) {
+    if (!state.programs.has(p.name)) {
+      fetchJson(`programs/${encodeURIComponent(p.name)}.json`)
+        .then((data) => state.programs.set(p.name, data))
+        .catch(() => {});
+    }
+  }
 }
 
 export async function selectRun(id, pane) {
@@ -99,7 +109,7 @@ export async function selectRun(id, pane) {
 
 export async function ensureRun(id, { reset = false } = {}) {
   if (!id) return;
-  const switching = reset || state.route.runId !== id || !state.runs.has(id);
+  const switching = reset || state.route.runId !== id;
   if (!state.runs.has(id)) {
     state.loading.run = true;
     state.errors.run = "";
@@ -107,14 +117,22 @@ export async function ensureRun(id, { reset = false } = {}) {
     try {
       const run = await fetchJson(`runs/${encodeURIComponent(id)}.json`);
       state.runs.set(id, run);
+      state.loading.run = false;
+      if (run?.program && !state.programs.has(run.program)) {
+        ensureProgram(run.program);
+      }
     } catch (e) {
       state.errors.run = String(e.message || e);
+      state.loading.run = false;
     }
-    state.loading.run = false;
+  } else {
+    const run = state.runs.get(id);
+    if (run?.program && !state.programs.has(run.program)) {
+      ensureProgram(run.program);
+    }
   }
   const run = state.runs.get(id);
-  if (run?.program) await ensureProgram(run.program);
-  if (switching) {
+  if (switching && run) {
     const keys = Object.keys(run?.attempt_go || {});
     state.goAttempt = keys.length ? keys[keys.length - 1] : null;
     stopReplay(true);
@@ -145,10 +163,7 @@ export function setPane(pane) {
 
 export function setPage(page, extra) {
   stopReplay(true);
-  let runId = extra?.runId || state.route.runId;
-  if (page === "explorer" && !runId && state.index?.runs?.length) {
-    runId = state.index.runs[0].id;
-  }
+  let runId = extra?.runId || "";
   state.route = { page, runId, pane: extra?.pane || "cobol", failGroup: extra?.failGroup || "" };
   setHash(state.route);
   if (page === "explorer" && runId && !state.runs.has(runId)) {
@@ -417,10 +432,6 @@ export async function boot() {
   setHash(state.route);
   await loadIndex();
   state.route = parseHash();
-  if (state.route.page === "explorer" && !state.route.runId && state.index?.runs?.length) {
-    state.route.runId = state.index.runs[0].id;
-    setHash(state.route);
-  }
   if (state.route.page === "explorer" && state.route.runId) {
     const meta = (state.index.runs || []).find((r) => r.id === state.route.runId);
     openProgramPath(meta);

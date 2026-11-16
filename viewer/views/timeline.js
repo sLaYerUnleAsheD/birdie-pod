@@ -1,7 +1,9 @@
 import { el, empty, clear } from "./dom.js";
 import {
-  state, money, playReplay, stopReplay, replayStep, restartReplay, setSpeed, emit,
+  state, money, playReplay, stopReplay, replayStep, restartReplay, setSpeed, emit, selectRun,
 } from "../store.js";
+
+const migratedCobolRuns = new Set();
 
 export function renderTimeline(root) {
   const run = state.runs.get(state.route.runId);
@@ -14,11 +16,16 @@ export function renderTimeline(root) {
 
   if (!controls) {
     clear(root);
-    const hdr = el("div", { class: "pane-h" }, el("h2", {}, "Pipeline"));
+    const hdr = el("div", { class: "pane-h" }, el("h2", {}, run ? `Pipeline · ${run.program}.cbl` : "Pipeline"));
     controls = el("div", { class: "replay-bar" },
       el("button", {
         class: "primary replay-btn", type: "button",
-        onClick: () => { restartReplay(); playReplay(); },
+        onClick: () => {
+          if (!run) return; // No job selected — do nothing
+          migratedCobolRuns.add(run.id);
+          restartReplay();
+          playReplay();
+        },
       }, "▶ Migrate job"),
       el("button", {
         class: "btn-play-pause", type: "button",
@@ -26,26 +33,53 @@ export function renderTimeline(root) {
           if (state.replay.playing) {
             stopReplay();
             emit();
-          } else {
+          } else if (run) {
+            migratedCobolRuns.add(run.id);
             playReplay();
           }
         },
       }, state.replay.playing ? "Pause" : "Play"),
-      el("button", { class: "btn-step", type: "button", onClick: () => replayStep(1) }, "Step"),
+      el("button", {
+        class: "btn-step", type: "button",
+        onClick: () => {
+          if (run) migratedCobolRuns.add(run.id);
+          replayStep(1);
+        },
+      }, "Step"),
       el("button", { class: "btn-1x", type: "button", onClick: () => setSpeed(1) }, "1×"),
       el("button", { class: "btn-2x", type: "button", onClick: () => setSpeed(2) }, "2×"),
-      el("button", { class: "btn-restart", type: "button", onClick: () => restartReplay() }, "Restart"),
+      el("button", {
+        class: "btn-restart", type: "button",
+        onClick: () => {
+          if (run) migratedCobolRuns.delete(run.id);
+          restartReplay();
+          emit();
+        },
+      }, "Restart"),
     );
 
     const caption = el("p", { class: "replay-caption", role: "note" },
       el("span", { class: "badge-dot" }),
-      "Replayed from data: no API call",
+      run ? `${run.program}.cbl` : "No file selected",
     );
 
     live = el("ol", { class: "timeline", "aria-live": "polite" });
     realWrap = el("div", { class: "real-wrap" });
 
     root.append(hdr, controls, caption, live, realWrap);
+  }
+
+  const hdrH2 = root.querySelector(".pane-h h2");
+  if (hdrH2) hdrH2.textContent = run ? `Pipeline · ${run.program}.cbl` : "Pipeline";
+
+  const caption = root.querySelector(".replay-caption");
+  if (caption) {
+    clear(caption);
+    const fileName = run ? `${run.program}.cbl` : "No file selected";
+    caption.append(
+      el("span", { class: `badge-dot ${state.replay.playing ? "pulse" : ""}` }),
+      fileName
+    );
   }
 
   // Update controls states without recreating buttons (prevents dropped clicks during playback)
@@ -60,8 +94,10 @@ export function renderTimeline(root) {
   if (btn2x) btn2x.setAttribute("aria-pressed", state.replay.speed === 2 ? "true" : "false");
 
   clear(live);
-  if (!run) live.append(empty("Pipeline appears once a run is selected."));
-  else {
+  const isMigrated = Boolean(run && (migratedCobolRuns.has(run.id) || state.replay.playing));
+  if (!run || !isMigrated) {
+    live.append(empty("Click '▶ Migrate job'"));
+  } else {
     steps.forEach((s, idx) => {
       const on = idx === i || (i < 0 && idx === 0 && !state.replay.playing);
       const shown = i < 0 ? true : idx <= i;
