@@ -66,29 +66,6 @@ export function renderVerifier(root) {
     );
   }
   page.append(specCards);
-
-  /* ═══════════════════════════════════════════════════════════════════
-     3. HISTORICAL MUTATION TESTING RESULTS (Verifier Strength)
-     ═══════════════════════════════════════════════════════════════════ */
-  page.append(el("h2", { style: "margin-top:2rem;" }, "Verifier Strength: AST Mutation Testing"));
-  page.append(
-    el("p", { class: "reading" }, "Mutation testing was conducted across translations to ensure the verifier reliably catches intentional semantic bugs (such as operator flips, rounding vs truncation, and boundary offsets)."),
-  );
-
-  const rows = state.index?.mutation || [];
-  if (!rows.length) {
-    page.append(empty("No mutation JSON under run/mutation. See python -m core.mutate in the README."));
-    root.append(page);
-    return;
-  }
-  const t = el("table");
-  t.append(el("tr", {}, ...["program", "mutants", "caught", "survived", "catch rate", "with more inputs"].map((h) => el("th", {}, h))));
-  for (const r of rows) {
-    t.append(el("tr", {},
-      el("td", {}, r.program), el("td", {}, r.mutants), el("td", {}, r.caught), el("td", {}, r.survived),
-      el("td", {}, fmtRate(r.catch_rate)), el("td", {}, fmtRate(r.with_more_inputs))));
-  }
-  page.append(t);
   root.append(page);
 }
 
@@ -100,11 +77,4 @@ function renderMetricCard(title, value, subtitle, accentColor) {
     el("span", { style: `font-size:1.6rem;font-weight:700;color:${accentColor};line-height:1.2;` }, value),
     el("span", { style: "font-size:.82rem;color:var(--mut);" }, subtitle),
   );
-}
-
-function fmtRate(v) {
-  if (v == null || v === "") return "—";
-  const n = Number(v);
-  if (Number.isNaN(n)) return String(v);
-  return n <= 1 ? `${Math.round(n * 100)}%` : String(v);
 }

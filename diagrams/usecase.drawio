@@ -1,0 +1,106 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="EXLake Use Case">
+    <mxGraphModel dx="1200" dy="800" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Title -->
+        <mxCell id="title" value="EXLake.ai · Use Case Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="284" y="20" width="600" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Actors -->
+        <!-- Data Engineer -->
+        <mxCell id="actor1" value="Data Engineer" style="shape=mxgraph.flowchart.start_2;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="160" width="40" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="actor1lbl" value="Data Engineer" style="text;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="205" width="80" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Legacy System -->
+        <mxCell id="actor2" value="" style="shape=mxgraph.flowchart.start_2;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="400" width="40" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="actor2lbl" value="Legacy System&#xa;(T-SQL / SAS)" style="text;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="30" y="445" width="100" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Databricks -->
+        <mxCell id="actor3" value="" style="shape=mxgraph.flowchart.start_2;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="300" width="40" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="actor3lbl" value="Databricks /&#xa;Fabric Target" style="text;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1025" y="345" width="90" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- System boundary -->
+        <mxCell id="boundary" value="&lt;b&gt;EXLake.ai Platform&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#444;dashed=0;fontStyle=1;fontSize=13;verticalAlign=top;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="160" y="80" width="860" height="680" as="geometry"/>
+        </mxCell>
+
+        <!-- Use Cases -->
+        <!-- UC1 -->
+        <mxCell id="uc1" value="Upload Legacy SQL / SAS Script" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="210" y="130" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <!-- UC2 -->
+        <mxCell id="uc2" value="Run 3-Tier AST Routing Triage" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="210" y="220" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <!-- UC3 -->
+        <mxCell id="uc3" value="Transpile via Deterministic AST&#xa;(Tier A · $0)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="130" width="200" height="55" as="geometry"/>
+        </mxCell>
+        <!-- UC4 -->
+        <mxCell id="uc4" value="Synthesize via Meta LLM&#xa;(Tier B · $0.015)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="220" width="200" height="55" as="geometry"/>
+        </mxCell>
+        <!-- UC5 -->
+        <mxCell id="uc5" value="Autonomous Repair Loop&#xa;(Tier C · $0.045, max 3)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="315" width="200" height="55" as="geometry"/>
+        </mxCell>
+        <!-- UC6 -->
+        <mxCell id="uc6" value="Apply Medallion Delta Lake&#xa;Contracts (Bronze→Gold)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="210" y="350" width="200" height="55" as="geometry"/>
+        </mxCell>
+        <!-- UC7 -->
+        <mxCell id="uc7" value="4-Point Parity Verification&#xa;(Row · Schema · Totals · Hash)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="210" y="460" width="200" height="55" as="geometry"/>
+        </mxCell>
+        <!-- UC8 -->
+        <mxCell id="uc8" value="Inspect Pipeline Steps&#xa;&amp; Repair Logs" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="430" width="200" height="55" as="geometry"/>
+        </mxCell>
+        <!-- UC9 -->
+        <mxCell id="uc9" value="Emit Audit Ledger Telemetry&#xa;(.cache/ledger.jsonl)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="560" width="200" height="55" as="geometry"/>
+        </mxCell>
+        <!-- UC10 -->
+        <mxCell id="uc10" value="Deploy PySpark Delta Pipeline&#xa;to Production" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="750" y="460" width="200" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- Actor → UC connections -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="actor1" target="uc1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="actor1" target="uc2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="actor1" target="uc8" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="actor2" target="uc1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="actor2" target="uc6" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- UC → UC connections (include) -->
+        <mxCell id="e6" value="«include»" style="dashed=1;endArrow=open;fontSize=10;" edge="1" source="uc2" target="uc3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" value="«include»" style="dashed=1;endArrow=open;fontSize=10;" edge="1" source="uc2" target="uc4" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" value="«include»" style="dashed=1;endArrow=open;fontSize=10;" edge="1" source="uc2" target="uc5" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e9" value="«include»" style="dashed=1;endArrow=open;fontSize=10;" edge="1" source="uc7" target="uc5" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="uc6" target="uc7" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="uc7" target="uc8" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="uc7" target="uc9" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="uc7" target="uc10" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="uc10" target="actor3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

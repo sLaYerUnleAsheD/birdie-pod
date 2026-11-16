@@ -32,13 +32,19 @@ export function renderWorkbench(root) {
       )
     );
   }
-  else if (state.loading.run || state.loading.program) body.append(skeleton(6));
+  else if (state.loading.run && !run) body.append(skeleton(6));
   else if (state.errors.run) body.append(empty(`Could not load this run: ${state.errors.run}`));
   else if (!run) body.append(empty("Missing run file."));
-  else if (pane === "cobol") body.append(cobolView(prog, run));
+  else if (pane === "cobol") {
+    if (state.loading.program && !prog) body.append(skeleton(6));
+    else body.append(cobolView(prog, run));
+  }
   else if (pane === "go") body.append(goView(run));
   else if (pane === "output") body.append(outputView(run, prog));
-  else body.append(layoutView(prog));
+  else {
+    if (state.loading.program && !prog) body.append(skeleton(6));
+    else body.append(layoutView(prog));
+  }
 
   clear(root);
   root.append(

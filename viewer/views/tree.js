@@ -70,7 +70,7 @@ function chip(kind, value, label) {
 
 function tierNode(tier, runs) {
   const key = tier;
-  const wrap = details(key, true, el("span", {}, tier, el("span", { class: "mut" }, ` · ${runs.length}`)));
+  const wrap = details(key, false, el("span", {}, tier, el("span", { class: "mut" }, ` · ${runs.length}`)));
   const byProg = group(runs, (r) => r.program);
   for (const prog of Object.keys(byProg).sort()) wrap.append(programNode(tier, prog, byProg[prog]));
   return wrap;

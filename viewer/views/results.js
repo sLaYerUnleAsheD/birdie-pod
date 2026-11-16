@@ -48,9 +48,9 @@ export function renderResults(root) {
   // Breakdown bars with stacked vertical label/bar to prevent ANY overlapping
   const llmBars = el("div", { style: "display:flex;flex-direction:column;gap:.75rem;padding-top:.5rem;border-top:1px solid var(--border);" });
   llmBars.append(
-    renderBar("Tier A: Deterministic sqlglot AST ($0.000)", 53, "9 jobs", "var(--ok, #31A24C)"),
-    renderBar("Tier B: Hybrid AST + Meta LLM / Claude Skill ($0.015)", 24, "4 jobs", "var(--blue-primary, #1877F2)"),
-    renderBar("Tier C: Autonomous Agent Repair (Meta LLM / Claude Skill · $0.045)", 23, "4 jobs", "var(--warn, #F5A623)"),
+    renderBar("Tier A: Deterministic sqlglot AST ($0.000)", 53, "9 jobs", "#31A24C"),
+    renderBar("Tier B: Hybrid AST + Meta LLM / Claude Skill ($0.015)", 24, "4 jobs", "#1877F2"),
+    renderBar("Tier C: Autonomous Agent Repair (Meta LLM / Claude Skill · $0.045)", 23, "4 jobs", "#F5A623"),
   );
   llmModule.append(llmBars);
   page.append(llmModule);
@@ -174,7 +174,7 @@ function renderBar(label, pct, count, color) {
     el("div", {
       style: "height:10px;width:100%;background:var(--panel-2,#edf2f7);border:1px solid var(--border);border-radius:5px;overflow:hidden;position:relative;"
     },
-      el("div", { style: `height:100%;width:${pct}%;background:${color};border-radius:4px;transition:width 0.4s ease;` })
+      el("div", { style: `height:100%;width:${pct}%;background-color:${color};background:${color};border-radius:4px;transition:width 0.4s ease;` })
     ),
   );
 }
